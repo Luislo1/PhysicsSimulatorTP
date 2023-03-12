@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 	private double dt = 0;
 	private double currentTime = 0;
 	private ForceLaws forces;
-	private Map<String, BodiesGroup> map;
+	private Map<String, BodiesGroup> map, mapRO;
 	private List<String> identifiers;
 	private List<SimulatorObserver> observers;
 
@@ -23,6 +24,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		this.dt = dt;
 		this.forces = forces;
 		map = new HashMap<String, BodiesGroup>();
+		mapRO = Collections.unmodifiableMap(map);
 		identifiers = new ArrayList<String>();
 		observers = new ArrayList<SimulatorObserver>();
 	}
