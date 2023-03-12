@@ -8,7 +8,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class PhysicsSimulator implements Observable<SimulatorObserver>{
+public class PhysicsSimulator implements Observable<SimulatorObserver> {
 
 	private double dt = 0;
 	private double currentTime = 0;
@@ -16,7 +16,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	private Map<String, BodiesGroup> map;
 	private List<String> identifiers;
 	private List<SimulatorObserver> observers;
-	
+
 	public PhysicsSimulator(double dt, ForceLaws forces) {
 		if (dt <= 0 || forces == null)
 			throw new IllegalArgumentException("Invalid parameters to create Physics Simulator");
@@ -26,39 +26,40 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		identifiers = new ArrayList<String>();
 		observers = new ArrayList<SimulatorObserver>();
 	}
+
 	public void advance() {
 		if (dt <= 0)
 			throw new IllegalArgumentException("Delta time must be a positive value");
-		
+
 		for (BodiesGroup bG : map.values()) {
 			bG.advance(dt);
 		}
 		currentTime += dt;
 	}
-	
+
 	public void addGroup(String id) {
-		if (!map.isEmpty() && map.containsKey(id)) 
+		if (!map.isEmpty() && map.containsKey(id))
 			throw new IllegalArgumentException("The Physics Simulator already contains a group with this ID");
-		
+
 		map.put(id, new BodiesGroup(id, forces));
 		identifiers.add(id);
 	}
-	
+
 	public void addBody(Body b) {
-		if (!map.containsKey(b.getgId())) 
+		if (!map.containsKey(b.getgId()))
 			throw new IllegalArgumentException("Invalid ID doesn't match with any in the Physics Simulator");
-		
+
 		map.get(b.getgId()).addBody(b);
 	}
-	
+
 	public void setForceLaws(String id, ForceLaws fl) {
-		if (!map.containsKey(id)) 
+		if (!map.containsKey(id))
 			throw new IllegalArgumentException("Invalid ID");
-		
+
 		map.get(id).setForceLaws(fl);
 	}
-	
-	public JSONObject getState() { 
+
+	public JSONObject getState() {
 		JSONObject jo = new JSONObject();
 		jo.put("time", currentTime);
 		JSONArray ja = new JSONArray();
@@ -68,28 +69,31 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		jo.put("groups", ja);
 		return jo;
 	}
-	
+
 	public void setDeltaTime(double dt) { // <= 0 as 0 is considered negative number.
 		if (dt <= 0)
 			throw new IllegalArgumentException("Delta time must be a positive value");
 		this.dt = dt;
 	}
-	
+
 	public String toString() {
 		return getState().toString();
 	}
-	
+
 	public void reset() {
 		map.clear();
 		identifiers.clear();
-		currentTime =0; 
+		currentTime = 0;
 	}
+
 	@Override
 	public void addObserver(SimulatorObserver o) {
-		observers.add(o);	
+		if (!observers.contains(o))
+			observers.add(o);
 	}
+
 	@Override
 	public void removeObserver(SimulatorObserver o) {
-		observers.remove(o);	
+		observers.remove(o);
 	}
 }
