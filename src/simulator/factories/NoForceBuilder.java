@@ -15,5 +15,13 @@ public class NoForceBuilder extends Builder<ForceLaws> {
 	protected ForceLaws createInstance(JSONObject data) {
 		return new NoForce();
 	}
+	@Override
+	public JSONObject getInfo() {
+		JSONObject info = getInfo(); //TODO 
+		//JSONArray ja = new JSONArray();
+		//ja.put
+		//info.put("data", "G": "the gravitational constant (a number)");
+		return getInfo();		
+	}
 
 }
