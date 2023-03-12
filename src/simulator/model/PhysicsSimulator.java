@@ -39,7 +39,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		currentTime += dt;
 
 		for (SimulatorObserver sO : observers) {
-			sO.onAdvance(map, currentTime);
+			sO.onAdvance(mapRO, currentTime);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		identifiers.add(id);
 
 		for (SimulatorObserver sO : observers) {
-			sO.onGroupAdded(map, bG);
+			sO.onGroupAdded(mapRO, bG);
 		}
 
 	}
@@ -63,7 +63,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 
 		map.get(b.getgId()).addBody(b);
 		for (SimulatorObserver sO : observers) {
-			sO.onBodyAdded(map, b);
+			sO.onBodyAdded(mapRO, b);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		map.get(id).setForceLaws(fl);
 
 		for (SimulatorObserver sO : observers) {
-			sO.onForceLawsChanged(map.get(id));
+			sO.onForceLawsChanged(mapRO.get(id)); //map or mapRO?
 		}
 	}
 
@@ -107,7 +107,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		identifiers.clear();
 		currentTime = 0;
 		for (SimulatorObserver sO : observers) {
-			sO.onReset(map, currentTime, dt);
+			sO.onReset(mapRO, currentTime, dt);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		if (!observers.contains(o)) {
 			observers.add(o);
 		}
-		o.onRegister(map, currentTime, dt);
+		o.onRegister(mapRO, currentTime, dt);
 	}
 
 	@Override
