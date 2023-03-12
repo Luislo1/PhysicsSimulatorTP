@@ -71,4 +71,9 @@ public class PhysicsSimulator {
 		return getState().toString();
 	}
 	
+	public void reset() {
+		map.clear();
+		identifiers.clear();
+		currentTime =0; 
+	}
 }
