@@ -8,7 +8,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class PhysicsSimulator {
+public class PhysicsSimulator implements Observable<SimilatorObserver>{
 
 	private double dt = 0;
 	private double currentTime = 0;
