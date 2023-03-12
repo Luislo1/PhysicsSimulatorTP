@@ -15,6 +15,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	private ForceLaws forces;
 	private Map<String, BodiesGroup> map;
 	private List<String> identifiers;
+	private List<SimulatorObserver> observers;
 	
 	public PhysicsSimulator(double dt, ForceLaws forces) {
 		if (dt <= 0 || forces == null)
@@ -23,6 +24,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		this.forces = forces;
 		map = new HashMap<String, BodiesGroup>();
 		identifiers = new ArrayList<String>();
+		observers = new ArrayList<SimulatorObserver>();
 	}
 	public void advance() {
 		if (dt <= 0)
@@ -84,12 +86,10 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	}
 	@Override
 	public void addObserver(SimulatorObserver o) {
-		// TODO Auto-generated method stub
-		
+		observers.add(o);	
 	}
 	@Override
 	public void removeObserver(SimulatorObserver o) {
-		// TODO Auto-generated method stub
-		
+		observers.remove(o);	
 	}
 }
