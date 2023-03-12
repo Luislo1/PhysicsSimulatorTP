@@ -8,7 +8,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class PhysicsSimulator implements Observable<SimilatorObserver>{
+public class PhysicsSimulator implements Observable<SimulatorObserver>{
 
 	private double dt = 0;
 	private double currentTime = 0;
@@ -81,5 +81,15 @@ public class PhysicsSimulator implements Observable<SimilatorObserver>{
 		map.clear();
 		identifiers.clear();
 		currentTime =0; 
+	}
+	@Override
+	public void addObserver(SimulatorObserver o) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeObserver(SimulatorObserver o) {
+		// TODO Auto-generated method stub
+		
 	}
 }
