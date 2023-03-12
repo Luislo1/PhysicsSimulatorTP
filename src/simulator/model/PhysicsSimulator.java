@@ -34,14 +34,24 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 			bG.advance(dt);
 		}
 		currentTime += dt;
+		
+		for(SimulatorObserver sO: observers) {
+			sO.onAdvance(map, currentTime);
+		}
 	}
 	
 	public void addGroup(String id) {
 		if (!map.isEmpty() && map.containsKey(id)) 
 			throw new IllegalArgumentException("The Physics Simulator already contains a group with this ID");
 		
-		map.put(id, new BodiesGroup(id, forces));
+		BodiesGroup bG = new BodiesGroup(id, forces);
+		map.put(id, bG);
 		identifiers.add(id);
+		
+		for(SimulatorObserver sO: observers) {
+			sO.onGroupAdded(map, bG);
+		}
+		
 	}
 	
 	public void addBody(Body b) {
@@ -49,6 +59,9 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 			throw new IllegalArgumentException("Invalid ID doesn't match with any in the Physics Simulator");
 		
 		map.get(b.getgId()).addBody(b);
+		for(SimulatorObserver sO: observers) {
+			sO.onBodyAdded(map, b);
+		}
 	}
 	
 	public void setForceLaws(String id, ForceLaws fl) {
@@ -56,6 +69,10 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 			throw new IllegalArgumentException("Invalid ID");
 		
 		map.get(id).setForceLaws(fl);
+		
+		for(SimulatorObserver sO: observers) {
+			sO.onForceLawsChanged(map.get(id));
+		}
 	}
 	
 	public JSONObject getState() { 
@@ -73,6 +90,9 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 		if (dt <= 0)
 			throw new IllegalArgumentException("Delta time must be a positive value");
 		this.dt = dt;
+		for(SimulatorObserver sO: observers) {
+			sO.onDeltaTimeChanged(dt);
+		}
 	}
 	
 	public String toString() {
@@ -82,11 +102,15 @@ public class PhysicsSimulator implements Observable<SimulatorObserver>{
 	public void reset() {
 		map.clear();
 		identifiers.clear();
-		currentTime =0; 
+		currentTime =0;
+		for(SimulatorObserver sO: observers) {
+			sO.onReset(map, currentTime, dt);
+		}
 	}
 	@Override
 	public void addObserver(SimulatorObserver o) {
-		observers.add(o);	
+		observers.add(o);
+		o.onRegister(map, currentTime, dt);
 	}
 	@Override
 	public void removeObserver(SimulatorObserver o) {
