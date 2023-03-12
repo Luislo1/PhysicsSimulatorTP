@@ -24,7 +24,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		this.dt = dt;
 		this.forces = forces;
 		map = new HashMap<String, BodiesGroup>();
-		mapRO = Collections.unmodifiableMap(map);
+		mapRO = Collections.unmodifiableMap(map); //Unmodifiable map to prevent observers from modifying data
 		identifiers = new ArrayList<String>();
 		observers = new ArrayList<SimulatorObserver>();
 	}
