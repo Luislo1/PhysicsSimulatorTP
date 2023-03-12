@@ -67,7 +67,7 @@ public class PhysicsSimulator {
 		return jo;
 	}
 	
-	public void setDeltaTime(double dt) {
+	public void setDeltaTime(double dt) { // <= 0 as 0 is considered negative number.
 		if (dt <= 0)
 			throw new IllegalArgumentException("Delta time must be a positive value");
 		this.dt = dt;
