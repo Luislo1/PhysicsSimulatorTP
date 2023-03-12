@@ -29,4 +29,13 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		return new MovingTowardsFixedPoint(c1, g); //default values c1 = [0,0] g = 9.81. 
 	}
 
+	@Override
+	public JSONObject getInfo() {
+		JSONObject info = getInfo(); //TODO 
+		//JSONArray ja = new JSONArray();
+		//ja.put
+		//info.put("data", "G": "the gravitational constant (a number)");
+		return getInfo();		
+	}
+	
 }
