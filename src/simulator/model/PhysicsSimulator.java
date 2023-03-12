@@ -17,7 +17,7 @@ public class PhysicsSimulator {
 	private List<String> identifiers;
 	
 	public PhysicsSimulator(double dt, ForceLaws forces) {
-		if (dt < 0 || forces == null)
+		if (dt <= 0 || forces == null)
 			throw new IllegalArgumentException("Invalid parameters to create Physics Simulator");
 		this.dt = dt;
 		this.forces = forces;
@@ -25,7 +25,7 @@ public class PhysicsSimulator {
 		identifiers = new ArrayList<String>();
 	}
 	public void advance() {
-		if (dt < 0)
+		if (dt <= 0)
 			throw new IllegalArgumentException("Delta time must be a positive value");
 		
 		for (BodiesGroup bG : map.values()) {
@@ -65,6 +65,12 @@ public class PhysicsSimulator {
 		}
 		jo.put("groups", ja);
 		return jo;
+	}
+	
+	public void setDeltaTime(double dt) {
+		if (dt <= 0)
+			throw new IllegalArgumentException("Delta time must be a positive value");
+		this.dt = dt;
 	}
 	
 	public String toString() {

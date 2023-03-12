@@ -18,5 +18,10 @@ public class NewtonUniversalGravitationBuilder extends Builder<ForceLaws> {
 			G = data.getDouble("G");
 		return new NewtonUniversalGravitation(G);
 	}
-
+	@Override
+	public JSONObject getInfo() {
+		getInfo();
+		return getInfo();
+		
+	}
 }
