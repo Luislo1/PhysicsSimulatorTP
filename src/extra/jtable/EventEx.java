@@ -15,7 +15,6 @@ public class EventEx {
 		return _time;
 
 	}
-
 	public int getPriority() {
 		return _priority;
 
