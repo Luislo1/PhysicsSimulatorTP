@@ -1,15 +1,17 @@
 package simulator.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class BodiesGroup {
+public class BodiesGroup implements Iterable<Body> {
 	private String gid;
 	private ForceLaws forces;
-	private List<Body> list;
+	private List<Body> list, listRO;
 	
 	public BodiesGroup(String gid, ForceLaws forces) {
 		if (gid == null || forces == null || gid.trim().length() <= 0)
@@ -17,6 +19,7 @@ public class BodiesGroup {
 		this.gid = gid;
 		this.forces = forces;
 		list = new ArrayList<Body>();
+		listRO = Collections.unmodifiableList(list);
 	}
 	
 	public String getId() {
@@ -60,6 +63,32 @@ public class BodiesGroup {
 	
 	public String toString() {
 		return getState().toString();
+	}
+	
+	public String getForceLawsInfo() {
+		return forces.toString();
+	}
+
+	@Override
+	public Iterator<Body> iterator() {
+		return new Iterator<Body>() {
+			Iterator<Body> it = list.iterator();
+
+			@Override
+			public boolean hasNext() {
+				return it.hasNext();
+			}
+
+			@Override
+			public Body next() {
+				return it.next();
+			}
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("Can't remove from unmodifiable list");
+			}
+			
+		};
 	}
 	
 }
