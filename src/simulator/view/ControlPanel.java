@@ -1,6 +1,10 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Map;
 
 import javax.swing.Box;
@@ -11,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
 import simulator.model.BodiesGroup;
@@ -18,7 +23,7 @@ import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
 public class ControlPanel extends JPanel implements SimulatorObserver {
-	
+
 	private Controller _ctrl;
 	private JToolBar _toolBar;
 	private JFileChooser _fc;
@@ -32,71 +37,98 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
 	private ForceLawsDialog _fLDialog;
-	//TODO
-	
+	// TODO
+
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
 		initGUI();
+		_ctrl.addObserver(this);
 	}
 
 	private void initGUI() {
 		setLayout(new BorderLayout());
 		_toolBar = new JToolBar();
 		add(_toolBar, BorderLayout.PAGE_START);
-		
-		//TODO make sure correct layout; use glue etc
+
+		// TODO make sure correct layout; use glue etc
 		_openButton = new JButton();
 		_openButton.setToolTipText("Load an input file into the simulator");
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
-		_openButton.addActionListener((e) -> _fc.showOpenDialog(Utils.getWindow(this))); //TODO do the two steps p7/14
+		_openButton.addActionListener((e) -> {
+			 int returnVal = _fc.showOpenDialog(Utils.getWindow(this));
+			 if (returnVal == JFileChooser.APPROVE_OPTION) { //TODO check if this is the correct way
+				 _ctrl.reset();
+				 File file = _fc.getSelectedFile();
+				 file.getPath();
+				 InputStream in;
+				try {
+					in = new FileInputStream(file);
+					 _ctrl.loadData(in);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			 }
+			 
+		});
+		
 		_toolBar.add(_openButton);
 		_toolBar.addSeparator();
-		
+
 		_selectButton = new JButton();
 		_selectButton.setToolTipText("Select force laws for groups");
 		_selectButton.setIcon(new ImageIcon("Resources/icons/physics.png"));
 		_selectButton.addActionListener((e) -> {
-			_fLDialog = new ForceLawsDialog();
+			if (_fLDialog == null)
+				_fLDialog = new ForceLawsDialog(null, _ctrl); // TODO use correct Frame
+			_fLDialog.open();
 		});
 		_toolBar.add(_selectButton);
-		
-		
+
 		_viewerButton = new JButton();
 		_viewerButton.setToolTipText("Open viewer window");
 		_viewerButton.setIcon(new ImageIcon("Resources/icons/viewer.png"));
-		_viewerButton.addActionListener((e) -> {});
+		_viewerButton.addActionListener((e) -> {
+			ViewerWindow viewerWindow = new ViewerWindow(null, _ctrl); // TODO use correct Frame
+
+		});
 		_toolBar.add(_viewerButton);
 		_toolBar.addSeparator();
-		
-		
+
 		_runButton = new JButton();
 		_runButton.setToolTipText("Run the simulator");
 		_runButton.setIcon(new ImageIcon("Resources/icons/run.png"));
-		_runButton.addActionListener((e) -> Utils.quit(this));
+		_runButton.addActionListener((e) -> {
+			// TODO disable all buttons except stop
+			_stopped = false;
+			 _ctrl.setDeltaTime(Integer.parseInt(_timeField.getText())); //TODO complete with the numbers in each of
+			// the components
+			 run_sim( (Integer) _stepSpinner.getValue()); //TODO check if getValue is grabbing correctly the int
+		});
 		_toolBar.add(_runButton);
-		
-		//TODO steps and delta time boxes
-		_stepSpinner = new JSpinner(); //TODO probably add Steps label
-		_stepSpinner.setToolTipText("Simulation steps to run: 1-10000");
-		_toolBar.add(_stepSpinner);
-		
-		_timeField = new JTextField("Delta-Time");
-		_timeField.setToolTipText("Real time (seconds) corresponding to a step");
-		_toolBar.add(_timeField);
-		
-		
-		
-		
+
+		_toolBar.add(Box.createGlue());
+		_toolBar.addSeparator();
 		_stopButton = new JButton();
 		_stopButton.setToolTipText("Stop the simulator");
 		_stopButton.setIcon(new ImageIcon("Resources/icons/stop.png"));
-		_stopButton.addActionListener((e) -> Utils.quit(this));
+		_stopButton.addActionListener((e) -> _stopped = true);
 		_toolBar.add(_quitButton);
+
+		// TODO steps and delta time boxes
+		_toolBar.add(Box.createGlue());
+		_toolBar.addSeparator();
+		_stepSpinner = new JSpinner(); // TODO probably add Steps label
+		_stepSpinner.setToolTipText("Simulation steps to run: 1-10000");
+		_toolBar.add(_stepSpinner);
+
 		
-		
-		
-		
-		//Quit Button
+		_toolBar.add(Box.createGlue());
+		_toolBar.addSeparator();
+		_timeField = new JTextField("Delta-Time");
+		_timeField.setToolTipText("Real time (seconds) corresponding to a step");
+		_toolBar.add(_timeField);
+
+		// Quit Button
 		_toolBar.add(Box.createGlue());
 		_toolBar.addSeparator();
 		_quitButton = new JButton();
@@ -104,52 +136,59 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_quitButton.setIcon(new ImageIcon("Resources/icons/exit.png"));
 		_quitButton.addActionListener((e) -> Utils.quit(this));
 		_toolBar.add(_quitButton);
-		
-		//TODO create the file chooser
-		//_fc = 
-		
+
+		// TODO create the file chooser
+		 _fc = new JFileChooser();
+
 	}
 
-	@Override
-	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		// TODO Auto-generated method stub
-		
-	}
+	private void run_sim(int n) {
+		if (n > 0 && !_stopped) {
 
-	@Override
-	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+			try {
+				_ctrl.run(1);
+			} catch (Exception e) {
+				Utils.showErrorMsg("Simulator has crashed");
+				// TODO enable all buttons
+				_stopped = true;
+				return;
+			}
+			SwingUtilities.invokeLater(() -> run_sim(n - 1));
+		} else {
+			// TODO enable all buttons
 
-	@Override
-	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
-		// TODO Auto-generated method stub
-		
+			_stopped = true;
+		}
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
-		
+		// TODO modify jtextfield with the current delta time
+
+	}
+
+	@Override
+	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
+	}
+
+	@Override
+	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
+	}
+
+	@Override
+	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
+	}
+
+	@Override
+	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
+	}
+
+	@Override
+	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
 	}
 
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {
-		// TODO Auto-generated method stub
-		
 	}
-	
+
 }
