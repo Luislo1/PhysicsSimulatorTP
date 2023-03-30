@@ -1,5 +1,6 @@
 package simulator.factories;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.model.ForceLaws;
@@ -17,11 +18,10 @@ public class NoForceBuilder extends Builder<ForceLaws> {
 	}
 	@Override
 	public JSONObject getInfo() {
-		JSONObject info = getInfo(); //TODO 
-		//JSONArray ja = new JSONArray();
-		//ja.put
-		//info.put("data", "G": "the gravitational constant (a number)");
-		return getInfo();		
+		JSONObject info = super.getInfo(); //TODO  check that it works properly
+		JSONArray ja = new JSONArray();
+		info.put("data", ja);
+		return info;		
 	}
 
 }
