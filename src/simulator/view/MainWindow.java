@@ -19,14 +19,14 @@ public class MainWindow extends JFrame {
 	public MainWindow(Controller ctrl) {
 		super("Physics Simulator");
 		_ctrl = ctrl;
-		initGUI();
+		initGUI(); // TODO check the horizontal resizing, vertical resizing works.
 	}
 
 	private void initGUI() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
 		
-		JPanel controlPanel = new ControlPanel(_ctrl);
+		JPanel controlPanel = new ControlPanel(_ctrl); // TODO
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
 		
 		JPanel statusBar = new StatusBar(_ctrl);

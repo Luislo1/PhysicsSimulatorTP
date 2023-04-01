@@ -4,7 +4,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -27,6 +30,7 @@ import simulator.factories.StationaryBodyBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
 import simulator.model.PhysicsSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 
@@ -36,6 +40,7 @@ public class Main {
 	private final static Double _dtimeDefaultValue = 2500.0;
 	private final static String _outputDefaultValue = "the standard output";
 	private final static String _forceLawsDefaultValue = "nlug";
+	private final static String _modeDefaultValue = "gui";
 
 	// some attributes to stores values corresponding to command-line parameters
 	//
@@ -44,6 +49,7 @@ public class Main {
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static JSONObject _forceLawsInfo = null;
+	private static String _mode = null;
 
 	// factories
 	private static Factory<Body> _bodyFactory;
@@ -75,6 +81,7 @@ public class Main {
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
+			parseModeOption(line);
 			parseInFileOption(line);
 			parseDeltaTimeOption(line);
 			parseForceLawsOption(line);
@@ -108,6 +115,13 @@ public class Main {
 		// input file
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("Bodies JSON input file.").build());
 
+		// mode
+		cmdLineOptions
+				.addOption(Option.builder("m").longOpt("mode").hasArg()
+						.desc("Execution Mode. Possible values: 'batch' " + "(Batch mode), '" + _modeDefaultValue
+								+ "' (Graphical User Interface mode). Default value: '" + _modeDefaultValue + "'.")
+						.build());
+
 		// delta-time
 		cmdLineOptions.addOption(Option.builder("dt").longOpt("delta-time").hasArg()
 				.desc("A double representing actual time, in seconds, per simulation step. Default value: "
@@ -125,7 +139,7 @@ public class Main {
 				.desc("Output file, where output is written. Default value: " + _outputDefaultValue + ".").build());
 		// steps
 		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg().desc(
-				"An integer representing he number of simulation steps. Default value: " + _stepsDefaultValue + ".")
+				"An integer representing the number of simulation steps. Default value: " + _stepsDefaultValue + ".")
 				.build());
 
 		return cmdLineOptions;
@@ -159,9 +173,13 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		if (_inFile == null) {
-			throw new ParseException("In batch mode an input file of bodies is required");
-		}
+		if (_mode != null) // Need to be before _mode.equals().
+			if (_inFile == null && _mode.equals("batch"))
+				throw new ParseException("In batch mode an input file of bodies is required");
+	}
+
+	private static void parseModeOption(CommandLine line) {
+		_mode = line.getOptionValue("m");
 	}
 
 	private static void parseDeltaTimeOption(CommandLine line) throws ParseException {
@@ -238,6 +256,7 @@ public class Main {
 
 	private static void startBatchMode() throws Exception { // Create a new simulator, input and output stream, and a
 															// controller that runs the simulation for n steps
+
 		PhysicsSimulator simulator = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo));
 		InputStream in = new FileInputStream(_inFile);
 		OutputStream out = System.out;
@@ -249,9 +268,33 @@ public class Main {
 		controller.run(_steps, out);
 	}
 
+	private static void startGUIMode() throws Exception {
+		InputStream in = null;
+
+		PhysicsSimulator simulator = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo));
+		if (_inFile != null)
+			in = new FileInputStream(_inFile);
+
+		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
+		if (in != null) 
+			controller.loadData(in);
+
+		try {
+			SwingUtilities.invokeAndWait(() -> new MainWindow(controller));
+		} catch (Exception e) {
+
+		}
+
+	}
+
 	private static void start(String[] args) throws Exception {
 		parseArgs(args);
-		startBatchMode();
+
+		if (_mode != null &&_mode.equals("batch")) // TODO
+			startBatchMode();
+		else
+			startGUIMode();
+
 	}
 
 	public static void main(String[] args) {

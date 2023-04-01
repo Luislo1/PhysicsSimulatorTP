@@ -11,6 +11,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -44,7 +45,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		initGUI();
 		_ctrl.addObserver(this);
 	}
-
+	// TODO check rezizing problem.
 	private void initGUI() {
 		setLayout(new BorderLayout());
 		_toolBar = new JToolBar();
@@ -63,7 +64,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				 InputStream in;
 				try {
 					in = new FileInputStream(file);
-					 _ctrl.loadData(in);
+					 _ctrl.loadData(in); // TODO fix problem, it crushes here.
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
@@ -100,31 +101,33 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_runButton.addActionListener((e) -> {
 			// TODO disable all buttons except stop
 			_stopped = false;
-			 _ctrl.setDeltaTime(Integer.parseInt(_timeField.getText())); //TODO complete with the numbers in each of
+			 _ctrl.setDeltaTime(Double.parseDouble(_timeField.getText())); //TODO complete with the numbers in each of
 			// the components
 			 run_sim( (Integer) _stepSpinner.getValue()); //TODO check if getValue is grabbing correctly the int
 		});
 		_toolBar.add(_runButton);
 
-		_toolBar.add(Box.createGlue());
-		_toolBar.addSeparator();
+		//_toolBar.add(Box.createGlue());
 		_stopButton = new JButton();
 		_stopButton.setToolTipText("Stop the simulator");
 		_stopButton.setIcon(new ImageIcon("Resources/icons/stop.png"));
 		_stopButton.addActionListener((e) -> _stopped = true);
-		_toolBar.add(_quitButton);
+		_toolBar.add(_stopButton);// TODO peta.
 
 		// TODO steps and delta time boxes
 		_toolBar.add(Box.createGlue());
-		_toolBar.addSeparator();
+		JLabel stepLabel = new JLabel("Steps:");
+		_toolBar.add(stepLabel);
 		_stepSpinner = new JSpinner(); // TODO probably add Steps label
+		_stepSpinner.setValue(10000);
 		_stepSpinner.setToolTipText("Simulation steps to run: 1-10000");
 		_toolBar.add(_stepSpinner);
 
 		
 		_toolBar.add(Box.createGlue());
-		_toolBar.addSeparator();
-		_timeField = new JTextField("Delta-Time");
+		JLabel deltaLabel = new JLabel("Delta-Time: ");
+		_toolBar.add(deltaLabel);
+		_timeField = new JTextField("2500.0");
 		_timeField.setToolTipText("Real time (seconds) corresponding to a step");
 		_toolBar.add(_timeField);
 
