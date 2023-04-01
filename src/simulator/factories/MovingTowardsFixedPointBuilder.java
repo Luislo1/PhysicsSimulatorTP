@@ -40,7 +40,7 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		jo2.put("g","the length of the acceleration vector (a number)");
 		ja.put(jo2);
 		info.put("data", ja);
-		return info;	
+		return info;	//test
 	}
 	
 }
