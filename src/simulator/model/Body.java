@@ -30,10 +30,10 @@ public abstract class Body {
 		this.m = m;
 		f = new Vector2D();
 	}
-	String getId() {
+	public String getId() {
 		return id;
 	}
-	String getgId() {
+	public String getgId() {
 		return gid;
 	}
 	public Vector2D getVelocity() {

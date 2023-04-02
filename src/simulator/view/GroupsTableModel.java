@@ -21,46 +21,67 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 		ctrl.addObserver(this);
 	}
 	
+	public String getColumnName(int col) {
+		return _header[col];
+	}
 	
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _groups == null ? 0 : _groups.size();
 	}
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _header.length;
 	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		Object s = null;
+		switch (columnIndex) {
+		case 0:
+			s = _groups.get(rowIndex).getId(); 
+			break;
+		case 1:
+			s = _groups.get(rowIndex).getForceLawsInfo();
+			break;
+		case 2:
+			s = _groups.get(rowIndex).getBodiesIds();// TODO get bodies id's.
+			break;
+		}
+		return s;
 	}
 	@Override
-	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		// TODO Auto-generated method stub
-		
+	public void onAdvance(Map<String, BodiesGroup> groups, double time) { // TODO time?
+		for (BodiesGroup g : _groups) {
+            g = groups.get(g.getId());
+        }	
+		fireTableDataChanged();
 	}
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		_groups.clear();
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
+		    BodiesGroup value = entry.getValue();
+		    _groups.add(value);
+		}
+		fireTableStructureChanged();
 	}
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
+		    BodiesGroup value = entry.getValue();
+		    _groups.add(value);
+		}
+		fireTableStructureChanged();
 	}
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		// TODO Auto-generated method stub
+		_groups.add(g);
+		fireTableStructureChanged();
 		
 	}
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
-		// TODO Auto-generated method stub
-		
+		fireTableStructureChanged();
 	}
 	@Override
 	public void onDeltaTimeChanged(double dt) {

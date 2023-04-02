@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
@@ -112,14 +114,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_stopButton.setToolTipText("Stop the simulator");
 		_stopButton.setIcon(new ImageIcon("Resources/icons/stop.png"));
 		_stopButton.addActionListener((e) -> _stopped = true);
-		_toolBar.add(_stopButton);// TODO peta.
+		_toolBar.add(_stopButton);
 
-		// TODO steps and delta time boxes
 		_toolBar.add(Box.createGlue());
 		JLabel stepLabel = new JLabel("Steps:");
 		_toolBar.add(stepLabel);
-		_stepSpinner = new JSpinner(); // TODO probably add Steps label
-		_stepSpinner.setValue(10000);
+		SpinnerModel model = new SpinnerNumberModel(10000, 0, 100000, 100); // TODO Max value of the spinner.
+		_stepSpinner = new JSpinner(model); 
 		_stepSpinner.setToolTipText("Simulation steps to run: 1-10000");
 		_toolBar.add(_stepSpinner);
 

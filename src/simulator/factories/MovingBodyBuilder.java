@@ -56,4 +56,9 @@ public class MovingBodyBuilder extends Builder<Body> {
 		return new MovingBody(id, gid, p1, v1, m);
 	}
 
+	@Override
+	public void fillInData(JSONObject data) {
+		
+	}
+
 }

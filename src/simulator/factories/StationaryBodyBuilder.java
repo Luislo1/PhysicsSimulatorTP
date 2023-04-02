@@ -47,4 +47,9 @@ public class StationaryBodyBuilder extends Builder<Body> {
 		return new StationaryBody(id, gid, p1, m);
 	}
 
+	@Override
+	public void fillInData(JSONObject data) {
+		
+	}
+
 }

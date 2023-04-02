@@ -20,7 +20,7 @@ public class InfoTable extends JPanel {
 
 	String _title;
 	TableModel _tableModel;
-	private JTable _table;
+	private JTable _tableInfo;
 	
 	private Border _defaultBorder = BorderFactory.createLineBorder(Color.black, 1);
 
@@ -39,9 +39,9 @@ public class InfoTable extends JPanel {
 		eventsPanel.setBorder(BorderFactory.createTitledBorder(_defaultBorder, _title, TitledBorder.LEFT, TitledBorder.TOP));
 
 		// the model
-		_table = new JTable(_tableModel);
+		_tableInfo = new JTable(_tableModel);
 
-		eventsPanel.add(new JScrollPane(_table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		eventsPanel.add(new JScrollPane(_tableInfo, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 		
 		// TODO bottom black border can't be seen.

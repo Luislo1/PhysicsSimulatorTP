@@ -29,6 +29,8 @@ public abstract class Builder<T> {
 	public String toString() {
 		return _desc;
 	}
+	
+	public abstract void fillInData(JSONObject data);
 
 	protected abstract T createInstance(JSONObject data);
 }
