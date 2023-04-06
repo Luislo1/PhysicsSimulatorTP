@@ -94,12 +94,4 @@ public class BodiesGroup implements Iterable<Body> {
 			
 		};
 	}
-	
-	public String getBodiesIds() {
-		StringBuilder str = new StringBuilder();
-		for(Body b: listRO) {
-			str.append(b.getId()).append(" ");
-		}
-		return str.toString();
-	}
 }

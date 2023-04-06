@@ -44,7 +44,7 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 			s = _groups.get(rowIndex).getForceLawsInfo();
 			break;
 		case 2:
-			s = _groups.get(rowIndex).getBodiesIds();// TODO get bodies id's.
+			s = getBodiesIds(rowIndex);// TODO get bodies id's.
 			break;
 		}
 		return s;
@@ -86,14 +86,19 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public void onDeltaTimeChanged(double dt) {
 		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {
 		// TODO Auto-generated method stub
-		
 	}
 	
-	
+	public String getBodiesIds(int rowIndex) {
+		StringBuilder str = new StringBuilder();
+		for(Body b: _groups.get(rowIndex)) {
+			str.append(b.getId()).append(" ");
+		}
+		
+		return str.toString();
+	}
 
 }

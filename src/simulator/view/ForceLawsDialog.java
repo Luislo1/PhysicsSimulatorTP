@@ -14,8 +14,10 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import extra.dialog.ex1.Dish;
 import simulator.control.Controller;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
@@ -33,6 +35,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 	private int _status;
 	private JComboBox<String> _laws;
 	private JComboBox<String> _groups;
+	private int _selectedLawsIndex = 0;
 	
 	
 	ForceLawsDialog(Frame parent, Controller ctrl) {
@@ -41,8 +44,6 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		initGUI();
 		ctrl.addObserver(this);
 	}
-	
-	
 	
 	private void initGUI() {
 		setTitle("Force Laws Selection");
@@ -60,8 +61,9 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		_dataTableModel = new DefaultTableModel() {
 				@Override
 				public boolean isCellEditable(int row, int column) {
+					if(column == 1) // Make column 1 editable.
+						return true;
 					return false;
-					//TODO make only column 1 editable (the value column)
 				}
 		};
 		_dataTableModel.setColumnIdentifiers(_headers);
@@ -71,14 +73,21 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		_lawsModel = new DefaultComboBoxModel<>();
 		//TODO add the description of all force laws to _lawsModel : do it with factory arraylist in main with getInfo()
 		_laws = new JComboBox<>(_lawsModel);
+		_laws.addActionListener((e) -> {
+			_selectedLawsIndex = _laws.getSelectedIndex();
+			JSONObject info = _forceLawsInfo.get(_selectedLawsIndex);
+			JSONArray data = info.getJSONArray("data");
+			for(int i = 0; i < data.length(); i++) {
+				JSONObject jo = data.getJSONObject(i);
+				//jo.;
+			}
+		});
 		mainPanel.add(_laws);
 		
 		
 		_groupsModel = new DefaultComboBoxModel<>();
 		_groups = new JComboBox<>(_groupsModel);
 		mainPanel.add(_groups);
-		
-		//TODO OK and cancel buttons to mainPanel
 		
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
@@ -112,13 +121,26 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		if (_groupsModel.getSize() == 0)
 			return _status;
 		
+		_lawsModel.removeAllElements();
+		for (JSONObject j : _forceLawsInfo)
+			_lawsModel.addElement(j.getString("desc"));
 		
+		
+		setLocation(getParent().getLocation().x + 10, getParent().getLocation().y + 10);
 		pack();
 		setVisible(true);
 		return _status;
 	}
 	
-
+	// For getting the item selected in the comboBox.
+	JSONObject getForceLawDesc() { 
+		return (JSONObject) _lawsModel.getSelectedItem();
+	}
+	
+	BodiesGroup getGroup() {
+		return (BodiesGroup) _groupsModel.getSelectedItem();
+	}
+	
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
 		// TODO Auto-generated method stub
@@ -127,20 +149,24 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		_groupsModel.removeAllElements(); // TODO check
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
+		    BodiesGroup value = entry.getValue();
+		    _groupsModel.addElement(value.getId());
+		}
 	}
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
+		    BodiesGroup value = entry.getValue();
+		    _groupsModel.addElement(value.getId());
+		}	
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		// TODO Auto-generated method stub
-		
+		_groupsModel.addElement(g.getId());
 	}
 
 	@Override

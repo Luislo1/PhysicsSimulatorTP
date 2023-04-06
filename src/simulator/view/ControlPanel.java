@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +12,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -39,7 +41,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JButton _stopButton;
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
-	private ForceLawsDialog _fLDialog;
+	private ForceLawsDialog _flDialog;
+	
 	// TODO
 
 	ControlPanel(Controller ctrl) {
@@ -81,9 +84,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_selectButton.setToolTipText("Select force laws for groups");
 		_selectButton.setIcon(new ImageIcon("Resources/icons/physics.png"));
 		_selectButton.addActionListener((e) -> {
-			if (_fLDialog == null)
-				_fLDialog = new ForceLawsDialog(null, _ctrl); // TODO use correct Frame
-			_fLDialog.open();
+			if (_flDialog == null) {
+				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+				_flDialog = new ForceLawsDialog(parent, _ctrl);
+			}
+			int status = _flDialog.open();	
 		});
 		_toolBar.add(_selectButton);
 
@@ -91,7 +96,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_viewerButton.setToolTipText("Open viewer window");
 		_viewerButton.setIcon(new ImageIcon("Resources/icons/viewer.png"));
 		_viewerButton.addActionListener((e) -> {
-			ViewerWindow viewerWindow = new ViewerWindow(null, _ctrl); // TODO use correct Frame
+			JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+			ViewerWindow viewerWindow  = new ViewerWindow(parent, _ctrl);
 
 		});
 		_toolBar.add(_viewerButton);
