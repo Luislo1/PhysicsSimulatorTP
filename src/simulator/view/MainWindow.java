@@ -23,10 +23,10 @@ public class MainWindow extends JFrame {
 	}
 
 	private void initGUI() {
-		JPanel mainPanel = new JPanel(new BorderLayout());
+		JPanel mainPanel = new JPanel(new BorderLayout());// TODO check layout works as intended
 		setContentPane(mainPanel);
 		
-		JPanel controlPanel = new ControlPanel(_ctrl); // TODO
+		JPanel controlPanel = new ControlPanel(_ctrl);
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
 		
 		JPanel statusBar = new StatusBar(_ctrl);
@@ -47,16 +47,10 @@ public class MainWindow extends JFrame {
 		bodiesTable.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(bodiesTable);
 		
-		
-		//TODO call Utils.quit(MainWindow.this) in method windowClosing with a window listener
-		
-		//addWindowListener(....);//TODO
 		addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
@@ -66,33 +60,23 @@ public class MainWindow extends JFrame {
 			}
 
 			@Override
-			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void windowClosed(WindowEvent e) {			
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void windowDeiconified(WindowEvent e) {				
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void windowDeactivated(WindowEvent e) {				
 			}
 			
 		});

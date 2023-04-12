@@ -44,18 +44,20 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 			s = _groups.get(rowIndex).getForceLawsInfo();
 			break;
 		case 2:
-			s = getBodiesIds(rowIndex);// TODO get bodies id's.
+			s = getBodiesIds(rowIndex);
 			break;
 		}
 		return s;
 	}
+	
 	@Override
-	public void onAdvance(Map<String, BodiesGroup> groups, double time) { // TODO time?
+	public void onAdvance(Map<String, BodiesGroup> groups, double time) { // TODO should time be used?
 		for (BodiesGroup g : _groups) {
             g = groups.get(g.getId());
         }	
 		fireTableDataChanged();
 	}
+	
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
 		_groups.clear();
@@ -65,6 +67,7 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 		}
 		fireTableStructureChanged();
 	}
+	
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
 		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
@@ -73,23 +76,25 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 		}
 		fireTableStructureChanged();
 	}
+	
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
 		_groups.add(g);
 		fireTableStructureChanged();
 		
 	}
+	
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
 		fireTableStructureChanged();
 	}
+	
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
 	}
+	
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {
-		// TODO Auto-generated method stub
 	}
 	
 	public String getBodiesIds(int rowIndex) {

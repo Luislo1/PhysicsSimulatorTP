@@ -290,7 +290,7 @@ public class Main {
 	private static void start(String[] args) throws Exception {
 		parseArgs(args);
 
-		if (_mode != null &&_mode.equals("batch")) // TODO
+		if (_mode != null && _mode.equals("batch")) // TODO is this the correct way of starting the GUI?
 			startBatchMode();
 		else
 			startGUIMode();

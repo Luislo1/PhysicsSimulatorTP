@@ -1,6 +1,5 @@
 package simulator.factories;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.model.ForceLaws;
@@ -18,9 +17,9 @@ public class NoForceBuilder extends Builder<ForceLaws> {
 	}
 	@Override
 	public JSONObject getInfo() {
-		JSONObject info = super.getInfo(); //TODO  check that it works properly
-		JSONArray ja = new JSONArray();
-		info.put("data", ja);
+		JSONObject info = super.getInfo();
+		JSONObject data = new JSONObject();
+		info.put("data", data);
 		return info;		
 	}
 

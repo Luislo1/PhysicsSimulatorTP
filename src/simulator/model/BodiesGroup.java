@@ -68,10 +68,6 @@ public class BodiesGroup implements Iterable<Body> {
 	public String getForceLawsInfo() {
 		return forces.toString();
 	}
-	
-	public List<Body> getBodiesList() { // TODO unused yet.
-		return listRO;
-	}
 
 	@Override
 	public Iterator<Body> iterator() {

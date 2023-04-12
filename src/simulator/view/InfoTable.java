@@ -47,7 +47,7 @@ public class InfoTable extends JPanel {
 		// TODO bottom black border can't be seen.
 
 		// the actual events list
-		/* TODO
+		/* TODO que es esto
 		_events = new ArrayList<EventEx>();
 		_model.setEventsList(_events);
 		*/

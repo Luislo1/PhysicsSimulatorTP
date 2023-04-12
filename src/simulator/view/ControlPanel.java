@@ -42,8 +42,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
-	
-	// TODO
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
@@ -69,7 +67,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				 InputStream in;
 				try {
 					in = new FileInputStream(file);
-					 _ctrl.loadData(in); // TODO fix problem, it crushes here.
+					 _ctrl.loadData(in);
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
@@ -125,7 +123,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_toolBar.add(Box.createGlue());
 		JLabel stepLabel = new JLabel("Steps:");
 		_toolBar.add(stepLabel);
-		SpinnerModel model = new SpinnerNumberModel(10000, 0, 100000, 100); // TODO Max value of the spinner.
+		SpinnerModel model = new SpinnerNumberModel(10000, 0, 100000, 100); // TODO What is the Max value of the spinner?
 		_stepSpinner = new JSpinner(model); 
 		_stepSpinner.setToolTipText("Simulation steps to run: 1-10000");
 		_toolBar.add(_stepSpinner);

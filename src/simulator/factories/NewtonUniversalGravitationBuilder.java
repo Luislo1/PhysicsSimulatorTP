@@ -1,6 +1,5 @@
 package simulator.factories;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.model.ForceLaws;
@@ -21,12 +20,10 @@ public class NewtonUniversalGravitationBuilder extends Builder<ForceLaws> {
 	}
 	@Override
 	public JSONObject getInfo() {
-		JSONObject info = super.getInfo(); //TODO 
-		JSONArray ja = new JSONArray();
+		JSONObject info = super.getInfo();
 		JSONObject data = new JSONObject();
 		fillInData(data);
-		ja.put(data);
-		info.put("data", ja);
+		info.put("data", data);
 		return info;		
 	}
 

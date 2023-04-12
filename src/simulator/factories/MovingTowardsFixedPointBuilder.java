@@ -31,11 +31,10 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 
 	@Override
 	public JSONObject getInfo() {
-		JSONObject info = super.getInfo(); //TODO 
-		JSONArray ja = new JSONArray();
+		JSONObject info = super.getInfo();
 		JSONObject data = new JSONObject();
-		ja.put(data);
-		info.put("data", ja);
+		fillInData(data);
+		info.put("data", data);
 		return info;	//test
 	}
 

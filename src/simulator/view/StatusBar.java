@@ -20,7 +20,7 @@ public class StatusBar extends JPanel  implements SimulatorObserver {
 	private JTextField _groupField;
 	private double _time = 0;
 	private int _groupNumber = 0;
-	//TODO everything
+	
 	StatusBar(Controller ctrl) {
 		initGUI();
 		ctrl.addObserver(this);
