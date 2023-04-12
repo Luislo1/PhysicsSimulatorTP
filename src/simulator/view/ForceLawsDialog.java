@@ -83,6 +83,9 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			}
 		});
 		mainPanel.add(_laws);
+
+		for (JSONObject j : _forceLawsInfo)
+			_lawsModel.addElement(j.getString("desc"));
 		
 		
 		_groupsModel = new DefaultComboBoxModel<>();
@@ -120,10 +123,6 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 	public int open() {
 		if (_groupsModel.getSize() == 0)
 			return _status;
-		
-		_lawsModel.removeAllElements();
-		for (JSONObject j : _forceLawsInfo)
-			_lawsModel.addElement(j.getString("desc"));
 		
 		
 		setLocation(getParent().getLocation().x + 10, getParent().getLocation().y + 10);
