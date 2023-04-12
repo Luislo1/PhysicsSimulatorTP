@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import simulator.control.Controller;
 import simulator.model.BodiesGroup;
@@ -29,48 +30,54 @@ public class ViewerWindow extends JFrame implements SimulatorObserver {
 
 	private void initGUI() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
+		// ScrollBar
+		JScrollPane viewerScroll = new JScrollPane(_viewer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		mainPanel.add(viewerScroll);
+		
+		this.setContentPane(mainPanel);
+		
+		_viewer = new Viewer();
+		mainPanel.add(_viewer, BorderLayout.CENTER);
 		
 		addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
+				_ctrl.removeObserver(ViewerWindow.this);
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 			
@@ -88,43 +95,39 @@ public class ViewerWindow extends JFrame implements SimulatorObserver {
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		// TODO Auto-generated method stub
-		
+		_viewer.update();	
 	}
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		_viewer.reset();
 	}
 
 	@Override
-	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) { // TODO Do we need to check if there can be more than 1 group repeated?
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
+		    BodiesGroup value = entry.getValue();
+		    _viewer.addGroup(value);
+		}
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		// TODO Auto-generated method stub
-		
+		_viewer.addGroup(g);
 	}
 
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
-		// TODO Auto-generated method stub
-		
+		_viewer.addBody(b);
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {
-		// TODO Auto-generated method stub
 		
 	}
 	

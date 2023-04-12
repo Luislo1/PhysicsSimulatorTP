@@ -83,7 +83,6 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		for (JSONObject j : _forceLawsInfo)
 			_lawsModel.addElement(j.getString("desc"));
 		
-		
 		_groupsModel = new DefaultComboBoxModel<>();
 		_groups = new JComboBox<>(_groupsModel);
 		mainPanel.add(_groups);
@@ -132,7 +131,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 	
 	private void setNewForceLaws() {
 		JSONObject info = new JSONObject();
-		for (int i = 0; i < _dataTableModel.getRowCount(); i++) { //(a)
+		for (int i = 0; i < _dataTableModel.getRowCount(); i++) { //(a) TODO parse vectors for moving towards fixed point.
 			info.put(_dataTableModel.getValueAt(i, 0).toString(),Double.parseDouble(_dataTableModel.getValueAt(i, 1).toString()));
 		}
 		JSONObject data = new JSONObject(); //(b)
@@ -145,13 +144,13 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		JSONObject info = _forceLawsInfo.get(index); // (a)
 		JSONObject data = info.getJSONObject("data"); // (b)
 		_dataTableModel.setRowCount(0);
-		 // (c) A bit weird: Get the data array and get each object in the array, then iterate to take the key and value
+		// (c) iterate to take the key and value
 			
 			for (String key : data.keySet()) { 
 				String value = data.getString(key);
 				_dataTableModel.addRow(new Object[] {key, "", value});
 			}
-	}
+	} // TODO set default values.
 	
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {

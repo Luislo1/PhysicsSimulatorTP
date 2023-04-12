@@ -84,6 +84,24 @@ class Viewer extends SimulationViewer {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
+				switch(e.getKeyChar()) {
+				case 'j':
+					_originX -= 10;
+					repaint();
+					break;
+				case 'l':
+					_originX += 10;
+					repaint();
+					break;
+				case 'i':
+					_originY += 10;
+					repaint();
+					break;
+				case 'm':
+					_originY -= 10;
+					repaint();
+					break;
+				}
 			}
 
 			@Override
