@@ -83,7 +83,7 @@ class Viewer extends SimulationViewer {
 		addKeyListener(new KeyListener() {
 
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyTyped(KeyEvent e) { // Only when pressing letters.
 				switch(e.getKeyChar()) {
 				case 'j':
 					_originX -= 10;
@@ -101,11 +101,37 @@ class Viewer extends SimulationViewer {
 					_originY -= 10;
 					repaint();
 					break;
+				case 'k': // Reset buttom.
+					_originX = 0;
+					_originY = 0;
+					repaint();
+					break;
+				case 'h':
+					_showHelp = !_showHelp; // Each time we press we get the contrary value.
+					repaint();
+					break;
+				case 'v':
+					_showVectors = !_showVectors ;
+					repaint();
+					break;
+				case 'g':
+					_selectedGroupIdx++;
+					if(_selectedGroupIdx == _groups.size()) { // TODO check if is size or size - 1.
+						// Show all groups.
+						_selectedGroupIdx = -1;
+						_selectedGroup = null;
+					}
+					else {
+						_selectedGroup = _groups.get(_selectedGroupIdx).toString();	
+					}
+					repaint(); // TODO check if needed.
+					break;
 				}
+				
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void keyReleased(KeyEvent e) { // Unused as nothing is suppose to happen when we release a key.
 			}
 
 			/*
@@ -169,7 +195,7 @@ class Viewer extends SimulationViewer {
 			 * 
 			 */
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(KeyEvent e) { 
 				switch (e.getKeyChar()) {
 				case '-':
 					_scale = _scale * 1.1;
@@ -241,6 +267,7 @@ class Viewer extends SimulationViewer {
 	}
 
 	private void showHelp(Graphics2D g) {
+		
 		/*
 		 * TODO
 		 * 
@@ -290,6 +317,8 @@ class Viewer extends SimulationViewer {
 	}
 
 	private boolean isVisible(Body b) {
+		if(_selectedGroup.equals(null) || _selectedGroup.equals(b.getgId()))
+			return true;
 		/*
 		 * TODO 
 		 * 
@@ -319,6 +348,10 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addGroup(BodiesGroup g) {
+		_groups.add(g);
+		for(Body b: g) { // TODO check what happens in case of duplicated bodies in the _bodies list.
+			_bodies.add(b); 
+		}
 		/*
 		 * TODO
 		 * 
@@ -334,6 +367,7 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void addBody(Body b) {
+		_bodies.add(b);
 		/*
 		 * TODO
 		 * 
@@ -348,6 +382,9 @@ class Viewer extends SimulationViewer {
 
 	@Override
 	public void reset() {
+		_groups.clear();
+		_bodies.clear();
+		_gColor.clear();
 		/*
 		 * TODO
 		 * 
