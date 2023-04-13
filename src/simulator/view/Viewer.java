@@ -1,7 +1,9 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.JTextArea;
+
 import simulator.misc.Vector2D;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
@@ -56,6 +60,8 @@ class Viewer extends SimulationViewer {
 	// the index and Id of the selected group, -1 and null means all groups
 	private int _selectedGroupIdx = -1;
 	private String _selectedGroup = null;
+	
+	//JTextArea textArea;
 
 	Viewer() {
 		initGUI();
@@ -78,6 +84,12 @@ class Viewer extends SimulationViewer {
 		// The preferred and minimum size of the components
 		setMinimumSize(new Dimension(_WIDTH, _HEIGHT));
 		setPreferredSize(new Dimension(_WIDTH, _HEIGHT));
+		/*
+		textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		
+		this.add(textArea, BorderLayout.LINE_START);
+		*/
 
 		// add a key listener to handle the user actions
 		addKeyListener(new KeyListener() {
@@ -256,6 +268,12 @@ class Viewer extends SimulationViewer {
 		_centerY = getHeight() / 2 - _originY;
 
 		// TODO draw red cross at (_centerX,_centerY)
+		g.setColor(Color.RED);
+		// draw the vertical line of the cross.
+	    g.drawLine(_centerX + 5, _centerY, _centerX - 5, _centerY);
+	      
+	    // draw the horizontal line of the cross.
+	    g.drawLine(_centerX, _centerY + 5, _centerX, _centerY - 5);
 
 		// draw bodies
 		drawBodies(gr);
@@ -267,6 +285,17 @@ class Viewer extends SimulationViewer {
 	}
 
 	private void showHelp(Graphics2D g) {
+		g.setColor(Color.RED);
+		g.drawString("h: toggle help, v: toggle vectors, +: zoom-in, -: zoom-out, =: fit", 10, 15);
+		g.drawString("g: show next group", 10, 30);
+		g.drawString("l: move right, j: move left, i: move up, m: move down: k: reset", 10, 45);
+		g.drawString("Scaling ratio: " + _scale, 10, 60);
+		// TODO _scale is not working yet.
+		g.setColor(Color.BLUE);
+		if(_selectedGroup == null)
+			g.drawString("Selected Group: all", 10, 75);
+		else
+			g.drawString("Selected Group: " + _selectedGroup, 10, 75);
 		
 		/*
 		 * TODO
@@ -292,6 +321,17 @@ class Viewer extends SimulationViewer {
 	}
 
 	private void drawBodies(Graphics2D g) {
+		for(BodiesGroup bg: _groups) {
+			for(Body b: bg) {
+				if(isVisible(b)) {
+					//draw body
+					//g.drawOval(_centerX, _centerY, _WIDTH, _HEIGHT);
+					if(_showVectors)
+						drawLineWithArrow()//draw arrow using body
+				}	
+			}
+		}
+		
 		/*
 		 * TODO
 		 * 
@@ -317,7 +357,7 @@ class Viewer extends SimulationViewer {
 	}
 
 	private boolean isVisible(Body b) {
-		if(_selectedGroup.equals(null) || _selectedGroup.equals(b.getgId()))
+		if(_selectedGroup == null || _selectedGroup.equals(b.getgId()))
 			return true;
 		/*
 		 * TODO 
