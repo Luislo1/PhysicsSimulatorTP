@@ -134,7 +134,7 @@ class Viewer extends SimulationViewer {
 						_selectedGroup = null;
 					}
 					else {
-						_selectedGroup = _groups.get(_selectedGroupIdx).toString();	
+						_selectedGroup = _groups.get(_selectedGroupIdx).getId();	
 					}
 					repaint(); // TODO check if needed.
 					break;
@@ -325,9 +325,49 @@ class Viewer extends SimulationViewer {
 			for(Body b: bg) {
 				if(isVisible(b)) {
 					//draw body
-					//g.drawOval(_centerX, _centerY, _WIDTH, _HEIGHT);
-					if(_showVectors)
-						drawLineWithArrow()//draw arrow using body
+					g.setColor(_gColor.get(b.getgId()));
+					
+					
+					Double xPosition = b.getPosition().getX() / _scale;
+					Double yPosition = b.getPosition().getY() / _scale;
+					
+					int xPositionCoordinate = xPosition.intValue() + _centerX;
+					int yPositionCoordinate = yPosition.intValue() + _centerY;
+					
+					
+					Double xVelocity = b.getVelocity().getX();
+					Double yVelocity = b.getVelocity().getY();
+					// TODO multiplicar vector unitario con el de posición y limitar la flecha.
+					/*
+					Vector2D testCoord = b.getVelocity().direction();
+					Double xVelocity1 = testCoord.getX();
+					Double yVelocity1 = testCoord.getY();
+					int xVelocityCoordinate1 = xVelocity1.intValue();
+					int yVelocityCoordinate1 = yVelocity1.intValue();
+					*/
+					int xVelocityCoordinate = xVelocity.intValue();
+					int yVelocityCoordinate = yVelocity.intValue();
+					System.out.println(xVelocity.intValue());
+					System.out.println(yVelocity.intValue());
+					Double xForce = b.getForce().getX();
+					Double yForce = b.getForce().getY();
+					
+					int xForceCoordinate = xForce.intValue();
+					int yForceCoordinate = yForce.intValue();
+					
+					
+					g.fillOval(xPositionCoordinate, yPositionCoordinate, 10, 10);
+					
+					if(_showVectors) {
+						// For the velocity
+						drawLineWithArrow(g, xPositionCoordinate, yPositionCoordinate, 
+								xVelocityCoordinate, yVelocityCoordinate, 5, 5,
+								Color.GREEN, Color.GREEN);//draw arrow using body
+						// For the force.
+						drawLineWithArrow(g, xPositionCoordinate, yPositionCoordinate, 
+								xForceCoordinate, yForceCoordinate, 5, 5,
+								Color.RED, Color.RED);
+					}
 				}	
 			}
 		}
@@ -476,5 +516,5 @@ class Viewer extends SimulationViewer {
 		g.setColor(arrowColor);
 		g.fillPolygon(xpoints, ypoints, 3);
 	}
-
+	
 }
