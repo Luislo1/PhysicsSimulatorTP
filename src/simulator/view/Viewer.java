@@ -334,38 +334,34 @@ class Viewer extends SimulationViewer {
 					int xPositionCoordinate = xPosition.intValue() + _centerX;
 					int yPositionCoordinate = yPosition.intValue() + _centerY;
 					
-					
-					Double xVelocity = b.getVelocity().getX();
-					Double yVelocity = b.getVelocity().getY();
-					// TODO multiplicar vector unitario con el de posición y limitar la flecha.
-					/*
-					Vector2D testCoord = b.getVelocity().direction();
-					Double xVelocity1 = testCoord.getX();
-					Double yVelocity1 = testCoord.getY();
-					int xVelocityCoordinate1 = xVelocity1.intValue();
-					int yVelocityCoordinate1 = yVelocity1.intValue();
-					*/
-					int xVelocityCoordinate = xVelocity.intValue();
-					int yVelocityCoordinate = yVelocity.intValue();
-					System.out.println(xVelocity.intValue());
-					System.out.println(yVelocity.intValue());
-					Double xForce = b.getForce().getX();
-					Double yForce = b.getForce().getY();
-					
-					int xForceCoordinate = xForce.intValue();
-					int yForceCoordinate = yForce.intValue();
-					
+					Vector2D velocityCoordinate = b.getVelocity().direction();
+                    Double xVelocity = velocityCoordinate.getX();
+                    Double yVelocity = velocityCoordinate.getY();
+                    Double xVelocityCoordinate = xVelocity * 20 + xPositionCoordinate;
+                    Double yVelocityCoordinate = yVelocity * 20 + yPositionCoordinate;
+                    int xVelocityCoordinateInt = xVelocityCoordinate.intValue();
+                    int yVelocityCoordinateInt = yVelocityCoordinate.intValue();
+                    
+                    Vector2D forceCoordinate = b.getForce().direction();
+                    Double xForce = forceCoordinate.getX();
+                    Double yForce = forceCoordinate.getY();
+                    Double xForceCoordinate = xForce * 20 + xPositionCoordinate;
+                    Double yForceCoordinate = yForce * 20 + yPositionCoordinate;
+                    int xForceCoordinateInt = xForceCoordinate.intValue();
+                    int yForceCoordinateInt = yForceCoordinate.intValue();
 					
 					g.fillOval(xPositionCoordinate, yPositionCoordinate, 10, 10);
 					
+					int ovalRadius = 10 / 2;
+					
 					if(_showVectors) {
 						// For the velocity
-						drawLineWithArrow(g, xPositionCoordinate, yPositionCoordinate, 
-								xVelocityCoordinate, yVelocityCoordinate, 5, 5,
+						drawLineWithArrow(g, xPositionCoordinate + ovalRadius, yPositionCoordinate + ovalRadius, 
+								xVelocityCoordinateInt, yVelocityCoordinateInt, 5, 5,
 								Color.GREEN, Color.GREEN);//draw arrow using body
 						// For the force.
-						drawLineWithArrow(g, xPositionCoordinate, yPositionCoordinate, 
-								xForceCoordinate, yForceCoordinate, 5, 5,
+						drawLineWithArrow(g, xPositionCoordinate + ovalRadius, yPositionCoordinate + ovalRadius, 
+								xForceCoordinateInt, yForceCoordinateInt, 5, 5,
 								Color.RED, Color.RED);
 					}
 				}	
