@@ -1,7 +1,10 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +14,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,6 +62,12 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		
 		_forceLawsInfo = _ctrl.getForceLawsInfo();
 		
+		JLabel labelIntro = new JLabel("<html>Select a force law and provide values of the parameters in the <font color = 'black'>Value column</font>(default values are used for parameters <br>with no value)</html>"); // <br> = lineBrak
+		labelIntro.setAlignmentX(Component.LEFT_ALIGNMENT);
+		labelIntro.setAlignmentY(Component.TOP_ALIGNMENT);
+		JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		labelPanel.add(labelIntro);
+		mainPanel.add(labelPanel);
 		
 		JPanel eventsPanel = new JPanel(new BorderLayout());
 		mainPanel.add(eventsPanel, BorderLayout.CENTER);
@@ -69,8 +82,16 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 				}
 		};
 		_dataTableModel.setColumnIdentifiers(_headers);
-		JTable _dataTable = new JTable(_dataTableModel); //TODO put label and correct alignment
-		mainPanel.add(_dataTable);
+		JTable _dataTable = new JTable(_dataTableModel); 
+		eventsPanel.add(_dataTable);
+		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+		TableColumn tableColumn = _dataTable.getColumnModel().getColumn(2);
+		tableColumn.setMinWidth(300);
+		JPanel comboBoxPanel = new JPanel();
+		mainPanel.add(comboBoxPanel, BorderLayout.PAGE_END);
+		JLabel forceLawLabel = new JLabel("Force Law:");
+		comboBoxPanel.add(forceLawLabel);
 		
 		_lawsModel = new DefaultComboBoxModel<>();
 		_laws = new JComboBox<>(_lawsModel);
@@ -78,18 +99,22 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			_selectedLawsIndex = _laws.getSelectedIndex();
 			fillInTable(_selectedLawsIndex);
 		});
-		mainPanel.add(_laws);
-
+		comboBoxPanel.add(_laws);
+		
+		JLabel groupLabel = new JLabel("Group:");
+		comboBoxPanel.add(groupLabel);
+		
 		for (JSONObject j : _forceLawsInfo)
 			_lawsModel.addElement(j.getString("desc"));
 		
 		_groupsModel = new DefaultComboBoxModel<>();
 		_groups = new JComboBox<>(_groupsModel);
-		mainPanel.add(_groups);
+		comboBoxPanel.add(_groups);
 		
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setAlignmentX(BOTTOM_ALIGNMENT);
-		mainPanel.add(buttonsPanel);
+		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
+	
+		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener((e) -> {

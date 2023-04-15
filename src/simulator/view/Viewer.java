@@ -337,16 +337,16 @@ class Viewer extends SimulationViewer {
 					Vector2D velocityCoordinate = b.getVelocity().direction();
                     Double xVelocity = velocityCoordinate.getX();
                     Double yVelocity = velocityCoordinate.getY();
-                    Double xVelocityCoordinate = xVelocity * 20 + xPositionCoordinate;
-                    Double yVelocityCoordinate = yVelocity * 20 + yPositionCoordinate;
+                    Double xVelocityCoordinate = xPositionCoordinate + xVelocity * 20 + 5;
+                    Double yVelocityCoordinate = yPositionCoordinate + yVelocity * 20 + 5;
                     int xVelocityCoordinateInt = xVelocityCoordinate.intValue();
                     int yVelocityCoordinateInt = yVelocityCoordinate.intValue();
                     
                     Vector2D forceCoordinate = b.getForce().direction();
                     Double xForce = forceCoordinate.getX();
                     Double yForce = forceCoordinate.getY();
-                    Double xForceCoordinate = xForce * 20 + xPositionCoordinate;
-                    Double yForceCoordinate = yForce * 20 + yPositionCoordinate;
+                    Double xForceCoordinate = xPositionCoordinate + xForce * 20 + 5;
+                    Double yForceCoordinate = yPositionCoordinate + yForce * 20 + 5;
                     int xForceCoordinateInt = xForceCoordinate.intValue();
                     int yForceCoordinateInt = yForceCoordinate.intValue();
 					
