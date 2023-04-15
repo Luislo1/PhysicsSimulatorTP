@@ -327,7 +327,6 @@ class Viewer extends SimulationViewer {
 					//draw body
 					g.setColor(_gColor.get(b.getgId()));
 					
-					
 					Double xPosition = b.getPosition().getX() / _scale;
 					Double yPosition = b.getPosition().getY() / _scale;
 					
