@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 
 import simulator.control.Controller;
+import simulator.misc.Vector2D;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
@@ -129,6 +130,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			setNewForceLaws();
 			} catch (Exception exc) {
 				Utils.showErrorMsg("Problem encountered with new force laws, enter a valid value"); //TODO check message and if we have to separate catches
+				
 			}	
 			_status = 1;
 			ForceLawsDialog.this.setVisible(false);
@@ -156,8 +158,26 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 	
 	private void setNewForceLaws() {
 		JSONObject info = new JSONObject();
-		for (int i = 0; i < _dataTableModel.getRowCount(); i++) { //(a) TODO parse vectors for moving towards fixed point.
-			info.put(_dataTableModel.getValueAt(i, 0).toString(),Double.parseDouble(_dataTableModel.getValueAt(i, 1).toString()));
+		for (int i = 0; i < _dataTableModel.getRowCount(); i++) { //(a)
+			String value =_dataTableModel.getValueAt(i, 1).toString();
+			
+			if(value.isEmpty()) {
+				info.put(_dataTableModel.getValueAt(i, 0).toString(), ""); // TODO fix error while entering no value.
+			}
+			
+			if(value.contains("[")) { // TODO Ask if it's a good solution.
+				String str = value.replace("[", "").replace("]", ""); // remove square brackets
+				String[] parts = str.split(","); // split into two substrings
+				double num1 = Double.parseDouble(parts[0].trim()); // convert first substring to double
+				double num2 = Double.parseDouble(parts[1].trim()); // convert second substring to double
+				Vector2D v = new Vector2D(num1, num2);
+				info.put(_dataTableModel.getValueAt(i, 0).toString(), v.asJSONArray());
+			}
+			else {
+				info.put(_dataTableModel.getValueAt(i, 0).toString(),Double.parseDouble(_dataTableModel.getValueAt(i, 1).toString()));
+			}
+			
+			
 		}
 		JSONObject data = new JSONObject(); //(b)
 		data.put("data", info);

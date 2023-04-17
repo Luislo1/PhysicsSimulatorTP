@@ -105,13 +105,11 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_runButton.setToolTipText("Run the simulator");
 		_runButton.setIcon(new ImageIcon("Resources/icons/run.png"));
 		_runButton.addActionListener((e) -> {
-			// TODO disable all buttons except stop
 			_stopped = false;
 			enableAllButtons(_stopped);
 			_stopButton.setEnabled(!_stopped);
-			 _ctrl.setDeltaTime(Double.parseDouble(_timeField.getText())); //TODO complete with the numbers in each of
-			// the components
-			 run_sim( (Integer) _stepSpinner.getValue()); //TODO check if getValue is grabbing correctly the int
+			 _ctrl.setDeltaTime(Double.parseDouble(_timeField.getText()));
+			 run_sim( (Integer) _stepSpinner.getValue()); 
 		});
 		_toolBar.add(_runButton);
 
@@ -147,7 +145,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_quitButton.addActionListener((e) -> Utils.quit(this));
 		_toolBar.add(_quitButton);
 
-		// TODO create the file chooser
 		 _fc = new JFileChooser();
 
 	}
@@ -159,14 +156,12 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				_ctrl.run(1);
 			} catch (Exception e) {
 				Utils.showErrorMsg("Simulator has crashed");
-				// TODO enable all buttons
 				_stopped = true;
 				enableAllButtons(_stopped);
 				return;
 			}
 			SwingUtilities.invokeLater(() -> run_sim(n - 1));
 		} else {
-			// TODO enable all buttons
 			_stopped = true;
 			enableAllButtons(_stopped);
 		}
@@ -182,9 +177,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 	
 	@Override
-	public void onDeltaTimeChanged(double dt) {
-		// TODO modify jtextfield with the current delta time
-
+	public void onDeltaTimeChanged(double dt) { // TODO Ask when is this used?
+		Double deltaTime = dt;
+		_timeField.setText(deltaTime.toString());
 	}
 
 	@Override

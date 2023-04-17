@@ -46,7 +46,7 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 			s = _bodies.get(rowIndex).getgId();
 			break;
 		case 2:
-			s = _bodies.get(rowIndex).getMass();// TODO get bodies id's.
+			s = _bodies.get(rowIndex).getMass();
 			break;
 		case 3:
 			s = _bodies.get(rowIndex).getVelocity();
