@@ -32,25 +32,21 @@ public class InfoTable extends JPanel {
 	
 	private void initGUI() {
 		// table
-		JPanel eventsPanel = new JPanel(new BorderLayout());
-		this.add(eventsPanel, BorderLayout.CENTER);
+		JPanel infoPanel = new JPanel(new BorderLayout());
+		this.add(infoPanel, BorderLayout.CENTER);
 
 		// add border
-		eventsPanel.setBorder(BorderFactory.createTitledBorder(_defaultBorder, _title, TitledBorder.LEFT, TitledBorder.TOP));
+		infoPanel.setBorder(BorderFactory.createTitledBorder(_defaultBorder, _title, TitledBorder.LEFT, TitledBorder.TOP));
 
 		// the model
 		_tableInfo = new JTable(_tableModel);
 
-		eventsPanel.add(new JScrollPane(_tableInfo, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		infoPanel.add(new JScrollPane(_tableInfo, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 		
 		// TODO bottom black border can't be seen.
 
-		// the actual events list
-		/* TODO que es esto
-		_events = new ArrayList<EventEx>();
-		_model.setEventsList(_events);
-		*/
+		
 		setVisible(true);
 
 	}

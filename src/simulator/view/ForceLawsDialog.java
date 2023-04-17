@@ -156,14 +156,10 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		return _status;
 	}
 	
-	private void setNewForceLaws() {
+	private void setNewForceLaws() { // TODO Ask if once we put an int value it has to display an error.
 		JSONObject info = new JSONObject();
 		for (int i = 0; i < _dataTableModel.getRowCount(); i++) { //(a)
 			String value =_dataTableModel.getValueAt(i, 1).toString();
-			
-			if(value.isEmpty()) {
-				info.put(_dataTableModel.getValueAt(i, 0).toString(), ""); // TODO fix error while entering no value.
-			}
 			
 			if(value.contains("[")) { // TODO Ask if it's a good solution.
 				String str = value.replace("[", "").replace("]", ""); // remove square brackets
@@ -173,7 +169,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 				Vector2D v = new Vector2D(num1, num2);
 				info.put(_dataTableModel.getValueAt(i, 0).toString(), v.asJSONArray());
 			}
-			else {
+			else if(!value.isEmpty()){
 				info.put(_dataTableModel.getValueAt(i, 0).toString(),Double.parseDouble(_dataTableModel.getValueAt(i, 1).toString()));
 			}
 			
@@ -195,7 +191,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 				String value = data.getString(key);
 				_dataTableModel.addRow(new Object[] {key, "", value});
 			}
-	} // TODO set default values.
+	} 
 	
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
@@ -203,7 +199,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		_groupsModel.removeAllElements(); // TODO check
+		_groupsModel.removeAllElements();
 		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
 		    BodiesGroup value = entry.getValue();
 		    _groupsModel.addElement(value.getId());

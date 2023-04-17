@@ -51,7 +51,7 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 	}
 	
 	@Override
-	public void onAdvance(Map<String, BodiesGroup> groups, double time) { // TODO should time be used?
+	public void onAdvance(Map<String, BodiesGroup> groups, double time) { 
 		for (BodiesGroup g : _groups) {
             g = groups.get(g.getId());
         }	
@@ -94,7 +94,7 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 	}
 	
 	@Override
-	public void onForceLawsChanged(BodiesGroup g) {
+	public void onForceLawsChanged(BodiesGroup g) { // TODO Ask if we need to write the code here.
 	}
 	
 	public String getBodiesIds(int rowIndex) {
