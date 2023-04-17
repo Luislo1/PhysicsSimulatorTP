@@ -59,7 +59,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_openButton.setToolTipText("Load an input file into the simulator");
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
 		_openButton.addActionListener((e) -> {
-			 int returnVal = _fc.showOpenDialog(Utils.getWindow(this));
+			 int returnVal = _fc.showOpenDialog(Utils.getWindow(this)); //TODO should the file chooser open on the input path?
 			 if (returnVal == JFileChooser.APPROVE_OPTION) { //TODO check if this is the correct way
 				 _ctrl.reset();
 				 File file = _fc.getSelectedFile();
@@ -107,6 +107,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_runButton.addActionListener((e) -> {
 			// TODO disable all buttons except stop
 			_stopped = false;
+			enableAllButtons(_stopped);
+			_stopButton.setEnabled(!_stopped);
 			 _ctrl.setDeltaTime(Double.parseDouble(_timeField.getText())); //TODO complete with the numbers in each of
 			// the components
 			 run_sim( (Integer) _stepSpinner.getValue()); //TODO check if getValue is grabbing correctly the int
@@ -159,16 +161,26 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				Utils.showErrorMsg("Simulator has crashed");
 				// TODO enable all buttons
 				_stopped = true;
+				enableAllButtons(_stopped);
 				return;
 			}
 			SwingUtilities.invokeLater(() -> run_sim(n - 1));
 		} else {
 			// TODO enable all buttons
-
 			_stopped = true;
+			enableAllButtons(_stopped);
 		}
 	}
 
+	private void enableAllButtons(boolean activate) { //Sets all buttons to the boolean activate.
+		_quitButton.setEnabled(activate);
+		_openButton.setEnabled(activate);
+		_selectButton.setEnabled(activate);
+		_viewerButton.setEnabled(activate);
+		_runButton.setEnabled(activate);
+		_stopButton.setEnabled(activate);
+	}
+	
 	@Override
 	public void onDeltaTimeChanged(double dt) {
 		// TODO modify jtextfield with the current delta time
