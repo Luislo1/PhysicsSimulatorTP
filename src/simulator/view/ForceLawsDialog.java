@@ -77,7 +77,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		_dataTableModel = new DefaultTableModel() {
 				@Override
 				public boolean isCellEditable(int row, int column) {
-					if(column == 1) // Make column 1 editable.
+					if(column == 1) // Make column 1 editable
 						return true;
 					return false;
 				}

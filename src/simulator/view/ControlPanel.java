@@ -60,7 +60,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
 		_openButton.addActionListener((e) -> {
 			 int returnVal = _fc.showOpenDialog(Utils.getWindow(this)); //TODO should the file chooser open on the input path?
-			 if (returnVal == JFileChooser.APPROVE_OPTION) { //TODO check if this is the correct way
+			 if (returnVal == JFileChooser.APPROVE_OPTION) {
 				 _ctrl.reset();
 				 File file = _fc.getSelectedFile();
 				 file.getPath();
@@ -132,7 +132,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_toolBar.add(Box.createGlue());
 		JLabel deltaLabel = new JLabel("Delta-Time: ");
 		_toolBar.add(deltaLabel);
-		_timeField = new JTextField("2500.0");
+		_timeField = new JTextField("2500.0"); //TODO this time field must have a fixed size value (so that when we expand it doesnt expand)
 		_timeField.setToolTipText("Real time (seconds) corresponding to a step");
 		_toolBar.add(_timeField);
 
@@ -145,7 +145,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_quitButton.addActionListener((e) -> Utils.quit(this));
 		_toolBar.add(_quitButton);
 
-		 _fc = new JFileChooser();
+		 _fc = new JFileChooser("C:\\Users\\LUIS3\\Documents\\GitHub\\PhysicsSimulatorTP\\resources\\examples\\input");
 
 	}
 

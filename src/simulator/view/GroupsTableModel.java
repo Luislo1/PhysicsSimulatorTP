@@ -95,6 +95,7 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 	
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) { // TODO Ask if we need to write the code here.
+		fireTableDataChanged();
 	}
 	
 	public String getBodiesIds(int rowIndex) {

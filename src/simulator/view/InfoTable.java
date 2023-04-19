@@ -32,16 +32,15 @@ public class InfoTable extends JPanel {
 	
 	private void initGUI() {
 		// table
-		JPanel infoPanel = new JPanel(new BorderLayout());
-		this.add(infoPanel, BorderLayout.CENTER);
+		setLayout(new BorderLayout()); //TODO ver ejemplo de JSONBuilderDialog.java con el prepare renderer para el resizing
 
 		// add border
-		infoPanel.setBorder(BorderFactory.createTitledBorder(_defaultBorder, _title, TitledBorder.LEFT, TitledBorder.TOP));
+		this.setBorder(BorderFactory.createTitledBorder(_defaultBorder, _title));
 
 		// the model
 		_tableInfo = new JTable(_tableModel);
 
-		infoPanel.add(new JScrollPane(_tableInfo, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		this.add(new JScrollPane(_tableInfo, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 		
 		// TODO bottom black border can't be seen.
