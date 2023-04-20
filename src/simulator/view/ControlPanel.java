@@ -95,8 +95,13 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			_stopped = false;
 			enableAllButtons(_stopped);
 			_stopButton.setEnabled(!_stopped);
-			_ctrl.setDeltaTime(Double.parseDouble(_timeField.getText()));
-			run_sim((Integer) _stepSpinner.getValue());
+			try {
+				_ctrl.setDeltaTime(Double.parseDouble(_timeField.getText()));
+				run_sim((Integer) _stepSpinner.getValue());
+			} catch (Exception ex) {
+				Utils.showErrorMsg("Delta-time must be a valid value");
+				enableAllButtons(true);
+			}
 		});
 		_toolBar.add(_runButton);
 
