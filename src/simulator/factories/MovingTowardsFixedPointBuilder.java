@@ -18,7 +18,7 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		Vector2D c1 = new Vector2D();
 		Double g = 9.81;
 		if (data.has("c")) {
-			JSONArray c  = data.getJSONArray("c");
+			JSONArray c = data.getJSONArray("c");
 			if (c.length() != 2)
 				throw new IllegalArgumentException("Invalid amount of vector point parameters");
 			c1 = new Vector2D(c.getDouble(0), c.getDouble(1));
@@ -26,7 +26,7 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		if (data.has("g")) {
 			g = data.getDouble("g");
 		}
-		return new MovingTowardsFixedPoint(c1, g); //default values c1 = [0,0] g = 9.81. 
+		return new MovingTowardsFixedPoint(c1, g); // default values c1 = [0,0] g = 9.81.
 	}
 
 	@Override
@@ -35,13 +35,13 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		JSONObject data = new JSONObject();
 		fillInData(data);
 		info.put("data", data);
-		return info;	//test
+		return info; // test
 	}
 
 	@Override
 	public void fillInData(JSONObject data) {
-		data.put("c", "the point towards which bodies move (e.g., [100.0, 50.0])")
-		.put("g","the length of the acceleration vector (a number)");
+		data.put("c", "the point towards which bodies move (e.g., [100.0, 50.0])").put("g",
+				"the length of the acceleration vector (a number)");
 	}
-	
+
 }

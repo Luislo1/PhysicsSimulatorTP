@@ -11,11 +11,12 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+@SuppressWarnings("serial")
 public class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
-	
+
 	String[] _header = { "Id", "gId", "Mass", "Velocity", "Position", "Force" };
 	List<Body> _bodies;
-	
+
 	BodiesTableModel(Controller ctrl) {
 		_bodies = new ArrayList<>();
 		ctrl.addObserver(this);
@@ -24,7 +25,7 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	public String getColumnName(int col) {
 		return _header[col];
 	}
-	
+
 	@Override
 	public int getRowCount() {
 		return _bodies == null ? 0 : _bodies.size();
@@ -40,7 +41,7 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 		Object s = null;
 		switch (columnIndex) {
 		case 0:
-			s = _bodies.get(rowIndex).getId(); 
+			s = _bodies.get(rowIndex).getId();
 			break;
 		case 1:
 			s = _bodies.get(rowIndex).getgId();
@@ -64,38 +65,38 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
 		for (Body b : _bodies) {
-            for (Body b2 : groups.get(b.getgId())) { // For bodies in the same group as body b.
-            	if(b2.equals(b))
-            		b = b2;
-            }
-        }
+			for (Body b2 : groups.get(b.getgId())) { // For bodies in the same group as body b.
+				if (b2.equals(b))
+					b = b2;
+			}
+		}
 		fireTableDataChanged();
 	}
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
 		_bodies.clear();
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
-		    BodiesGroup value = entry.getValue();
-		    for(Body b : value) 
-		    	_bodies.add(b);
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+			BodiesGroup value = entry.getValue();
+			for (Body b : value)
+				_bodies.add(b);
 		}
 		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
-		    BodiesGroup value = entry.getValue();
-		    for(Body b : value)
-		    	_bodies.add(b);
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+			BodiesGroup value = entry.getValue();
+			for (Body b : value)
+				_bodies.add(b);
 		}
 		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		for(Body b : g)
+		for (Body b : g)
 			_bodies.add(b);
 		fireTableStructureChanged();
 	}
@@ -113,7 +114,5 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {
 	}
-	
-	
 
 }

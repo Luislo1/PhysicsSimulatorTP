@@ -15,12 +15,13 @@ public class NoForceBuilder extends Builder<ForceLaws> {
 	protected ForceLaws createInstance(JSONObject data) {
 		return new NoForce();
 	}
+
 	@Override
 	public JSONObject getInfo() {
 		JSONObject info = super.getInfo();
 		JSONObject data = new JSONObject();
 		info.put("data", data);
-		return info;		
+		return info;
 	}
 
 	@Override

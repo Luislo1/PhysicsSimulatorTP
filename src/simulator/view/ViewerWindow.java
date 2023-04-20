@@ -14,12 +14,13 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+@SuppressWarnings("serial")
 public class ViewerWindow extends JFrame implements SimulatorObserver {
-	
+
 	private Controller _ctrl;
 	private SimulationViewer _viewer;
 	private JFrame _parent;
-	
+
 	ViewerWindow(JFrame parent, Controller ctrl) {
 		super("Simulation Viewer");
 		_ctrl = ctrl;
@@ -34,17 +35,17 @@ public class ViewerWindow extends JFrame implements SimulatorObserver {
 		JScrollPane viewerScroll = new JScrollPane(_viewer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainPanel.add(viewerScroll);
-		
+
 		this.setContentPane(mainPanel);
-		
+
 		_viewer = new Viewer();
 		mainPanel.add(_viewer, BorderLayout.CENTER);
-		
+
 		addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				
+
 			}
 
 			@Override
@@ -54,45 +55,41 @@ public class ViewerWindow extends JFrame implements SimulatorObserver {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				
+
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				
-				
+
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				
-				
+
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				
-				
+
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				
-				
+
 			}
-			
+
 		});
-		
+
 		pack();
-		if (_parent != null) 
-			setLocation(_parent.getLocation().x + _parent.getWidth()/2 - getWidth()/2,
-					    _parent.getLocation().y + _parent.getHeight()/2 - getHeight()/2);
+		if (_parent != null)
+			setLocation(_parent.getLocation().x + _parent.getWidth() / 2 - getWidth() / 2,
+					_parent.getLocation().y + _parent.getHeight() / 2 - getHeight() / 2);
 		setVisible(true);
 	}
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		_viewer.update();	
+		_viewer.update();
 	}
 
 	@Override
@@ -102,9 +99,9 @@ public class ViewerWindow extends JFrame implements SimulatorObserver {
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
-		    BodiesGroup value = entry.getValue();
-		    _viewer.addGroup(value);
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+			BodiesGroup value = entry.getValue();
+			_viewer.addGroup(value);
 		}
 	}
 
@@ -120,12 +117,12 @@ public class ViewerWindow extends JFrame implements SimulatorObserver {
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
-		
+
 	}
 
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {
-		
+
 	}
-	
+
 }

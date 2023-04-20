@@ -1,9 +1,7 @@
 package simulator.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
 
 import simulator.misc.Vector2D;
 import simulator.model.BodiesGroup;
@@ -88,7 +85,7 @@ class Viewer extends SimulationViewer {
 
 			@Override
 			public void keyTyped(KeyEvent e) { // Only when pressing letters.
-				switch(e.getKeyChar()) {
+				switch (e.getKeyChar()) {
 				case 'j':
 					_originX -= 10;
 					repaint();
@@ -115,32 +112,30 @@ class Viewer extends SimulationViewer {
 					repaint();
 					break;
 				case 'v':
-					_showVectors = !_showVectors ;
+					_showVectors = !_showVectors;
 					repaint();
 					break;
 				case 'g':
 					_selectedGroupIdx++;
-					if(_selectedGroupIdx == _groups.size()) {
+					if (_selectedGroupIdx == _groups.size()) {
 						// Show all groups.
 						_selectedGroupIdx = -1;
 						_selectedGroup = null;
-					}
-					else {
-						_selectedGroup = _groups.get(_selectedGroupIdx).getId();	
+					} else {
+						_selectedGroup = _groups.get(_selectedGroupIdx).getId();
 					}
 					repaint();
 					break;
 				}
-				
+
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) { // Unused as nothing is suppose to happen when we release a key.
 			}
 
-			
 			@Override
-			public void keyPressed(KeyEvent e) { 
+			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyChar()) {
 				case '-':
 					_scale = _scale * 1.1;
@@ -200,13 +195,13 @@ class Viewer extends SimulationViewer {
 		_centerX = getWidth() / 2 - _originX;
 		_centerY = getHeight() / 2 - _originY;
 
-		//draw red cross at (_centerX,_centerY)
+		// draw red cross at (_centerX,_centerY)
 		g.setColor(Color.RED);
 		// draw the vertical line of the cross.
-	    g.drawLine(_centerX + 5, _centerY, _centerX - 5, _centerY);
-	      
-	    // draw the horizontal line of the cross.
-	    g.drawLine(_centerX, _centerY + 5, _centerX, _centerY - 5);
+		g.drawLine(_centerX + 5, _centerY, _centerX - 5, _centerY);
+
+		// draw the horizontal line of the cross.
+		g.drawLine(_centerX, _centerY + 5, _centerX, _centerY - 5);
 
 		// draw bodies
 		drawBodies(gr);
@@ -224,62 +219,63 @@ class Viewer extends SimulationViewer {
 		g.drawString("l: move right, j: move left, i: move up, m: move down: k: reset", 10, 45);
 		g.drawString("Scaling ratio: " + _scale, 10, 60);
 		g.setColor(Color.BLUE);
-		if(_selectedGroup == null)
+		if (_selectedGroup == null)
 			g.drawString("Selected Group: all", 10, 75);
 		else
 			g.drawString("Selected Group: " + _selectedGroup, 10, 75);
 	}
 
 	private void drawBodies(Graphics2D g) {
-		for(BodiesGroup bg: _groups) {
-			for(Body b: bg) {
-				if(isVisible(b)) {
-					//draw body
+		for (BodiesGroup bg : _groups) {
+			for (Body b : bg) {
+				if (isVisible(b)) {
+					// draw body
 					g.setColor(_gColor.get(b.getgId()));
-					
+
 					Double xPosition = b.getPosition().getX() / _scale;
 					Double yPosition = b.getPosition().getY() / _scale;
-					
+
 					int xPositionCoordinate = xPosition.intValue() + _centerX;
 					int yPositionCoordinate = yPosition.intValue() + _centerY;
-					
+
 					Vector2D velocityCoordinate = b.getVelocity().direction();
-                    Double xVelocity = velocityCoordinate.getX();
-                    Double yVelocity = velocityCoordinate.getY();
-                    Double xVelocityCoordinate = xPositionCoordinate + xVelocity * 20 + 5;
-                    Double yVelocityCoordinate = yPositionCoordinate + yVelocity * 20 + 5;
-                    int xVelocityCoordinateInt = xVelocityCoordinate.intValue();
-                    int yVelocityCoordinateInt = yVelocityCoordinate.intValue();
-                    
-                    Vector2D forceCoordinate = b.getForce().direction();
-                    Double xForce = forceCoordinate.getX();
-                    Double yForce = forceCoordinate.getY();
-                    Double xForceCoordinate = xPositionCoordinate + xForce * 20 + 5;
-                    Double yForceCoordinate = yPositionCoordinate + yForce * 20 + 5;
-                    int xForceCoordinateInt = xForceCoordinate.intValue();
-                    int yForceCoordinateInt = yForceCoordinate.intValue();
-					
+					Double xVelocity = velocityCoordinate.getX();
+					Double yVelocity = velocityCoordinate.getY();
+					Double xVelocityCoordinate = xPositionCoordinate + xVelocity * 20 + 5;
+					Double yVelocityCoordinate = yPositionCoordinate + yVelocity * 20 + 5;
+					int xVelocityCoordinateInt = xVelocityCoordinate.intValue();
+					int yVelocityCoordinateInt = yVelocityCoordinate.intValue();
+
+					Vector2D forceCoordinate = b.getForce().direction();
+					Double xForce = forceCoordinate.getX();
+					Double yForce = forceCoordinate.getY();
+					Double xForceCoordinate = xPositionCoordinate + xForce * 20 + 5;
+					Double yForceCoordinate = yPositionCoordinate + yForce * 20 + 5;
+					int xForceCoordinateInt = xForceCoordinate.intValue();
+					int yForceCoordinateInt = yForceCoordinate.intValue();
+
 					g.fillOval(xPositionCoordinate, yPositionCoordinate, 10, 10);
-					
+
 					int ovalRadius = 10 / 2;
-					
-					if(_showVectors) {
+
+					if (_showVectors) {
 						// For the velocity
-						drawLineWithArrow(g, xPositionCoordinate + ovalRadius, yPositionCoordinate + ovalRadius, 
-								xVelocityCoordinateInt, yVelocityCoordinateInt, 5, 5,
-								Color.GREEN, Color.GREEN);//draw arrow using body
+						drawLineWithArrow(g, xPositionCoordinate + ovalRadius, yPositionCoordinate + ovalRadius,
+								xVelocityCoordinateInt, yVelocityCoordinateInt, 5, 5, Color.GREEN, Color.GREEN);// draw
+																												// arrow
+																												// using
+																												// body
 						// For the force.
-						drawLineWithArrow(g, xPositionCoordinate + ovalRadius, yPositionCoordinate + ovalRadius, 
-								xForceCoordinateInt, yForceCoordinateInt, 5, 5,
-								Color.RED, Color.RED);
+						drawLineWithArrow(g, xPositionCoordinate + ovalRadius, yPositionCoordinate + ovalRadius,
+								xForceCoordinateInt, yForceCoordinateInt, 5, 5, Color.RED, Color.RED);
 					}
-				}	
+				}
 			}
 		}
 	}
 
 	private boolean isVisible(Body b) {
-		if(_selectedGroup == null || _selectedGroup.equals(b.getgId()))
+		if (_selectedGroup == null || _selectedGroup.equals(b.getgId()))
 			return true;
 		return false;
 	}
@@ -303,8 +299,8 @@ class Viewer extends SimulationViewer {
 	@Override
 	public void addGroup(BodiesGroup g) {
 		_groups.add(g);
-		for(Body b: g) {
-			_bodies.add(b); 
+		for (Body b : g) {
+			_bodies.add(b);
 		}
 		_gColor.put(g.getId(), _colorGen.nextColor()); // assign color to group
 		autoScale();
@@ -365,5 +361,5 @@ class Viewer extends SimulationViewer {
 		g.setColor(arrowColor);
 		g.fillPolygon(xpoints, ypoints, 3);
 	}
-	
+
 }

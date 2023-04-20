@@ -3,28 +3,23 @@ package simulator.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import extra.jtable.EventEx;
-import extra.jtable.EventsTableModel;
-
+@SuppressWarnings("serial")
 public class InfoTable extends JPanel {
 
 	String _title;
 	TableModel _tableModel;
 	private JTable _tableInfo;
-	
+
 	private Border _defaultBorder = BorderFactory.createLineBorder(Color.black, 1);
 
 	InfoTable(String title, TableModel tableModel) {
@@ -32,7 +27,7 @@ public class InfoTable extends JPanel {
 		_tableModel = tableModel;
 		initGUI();
 	}
-	
+
 	private void initGUI() {
 		// table
 		setLayout(new BorderLayout());
@@ -41,7 +36,7 @@ public class InfoTable extends JPanel {
 		this.setBorder(BorderFactory.createTitledBorder(_defaultBorder, _title));
 
 		// the model
-		_tableInfo = new JTable(_tableModel)  {
+		_tableInfo = new JTable(_tableModel) {
 			private static final long serialVersionUID = 1L;
 
 			// we override prepareRenderer to resize columns to fit to content
@@ -58,9 +53,7 @@ public class InfoTable extends JPanel {
 
 		this.add(new JScrollPane(_tableInfo, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-		
 
-		
 		setVisible(true);
 
 	}

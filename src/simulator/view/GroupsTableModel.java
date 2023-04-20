@@ -11,34 +11,37 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+@SuppressWarnings("serial")
 public class GroupsTableModel extends AbstractTableModel implements SimulatorObserver {
-	
+
 	String[] _header = { "Id", "Force Laws", "Bodies" };
 	List<BodiesGroup> _groups;
-	
+
 	GroupsTableModel(Controller ctrl) {
 		_groups = new ArrayList<>();
 		ctrl.addObserver(this);
 	}
-	
+
 	public String getColumnName(int col) {
 		return _header[col];
 	}
-	
+
 	@Override
 	public int getRowCount() {
 		return _groups == null ? 0 : _groups.size();
 	}
+
 	@Override
 	public int getColumnCount() {
 		return _header.length;
 	}
+
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
 		switch (columnIndex) {
 		case 0:
-			s = _groups.get(rowIndex).getId(); 
+			s = _groups.get(rowIndex).getId();
 			break;
 		case 1:
 			s = _groups.get(rowIndex).getForceLawsInfo();
@@ -49,61 +52,62 @@ public class GroupsTableModel extends AbstractTableModel implements SimulatorObs
 		}
 		return s;
 	}
-	
+
 	@Override
-	public void onAdvance(Map<String, BodiesGroup> groups, double time) { 
+	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
 		for (BodiesGroup g : _groups) {
-            g = groups.get(g.getId());
-        }	
+			g = groups.get(g.getId());
+		}
 		fireTableDataChanged();
 	}
-	
+
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
 		_groups.clear();
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
-		    BodiesGroup value = entry.getValue();
-		    _groups.add(value);
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+			BodiesGroup value = entry.getValue();
+			_groups.add(value);
 		}
 		fireTableStructureChanged();
 	}
-	
+
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
-		    BodiesGroup value = entry.getValue();
-		    _groups.add(value);
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+			BodiesGroup value = entry.getValue();
+			_groups.add(value);
 		}
 		fireTableStructureChanged();
 	}
-	
+
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
 		_groups.add(g);
 		fireTableStructureChanged();
-		
+
 	}
-	
+
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
 		fireTableStructureChanged();
 	}
-	
+
 	@Override
 	public void onDeltaTimeChanged(double dt) {
 	}
-	
+
 	@Override
-	public void onForceLawsChanged(BodiesGroup g) { 
+	public void onForceLawsChanged(BodiesGroup g) { // Used to update the table when new force laws are added with the
+													// force laws dialog
 		fireTableDataChanged();
 	}
-	
+
 	public String getBodiesIds(int rowIndex) {
 		StringBuilder str = new StringBuilder();
-		for(Body b: _groups.get(rowIndex)) {
+		for (Body b : _groups.get(rowIndex)) {
 			str.append(b.getId()).append(" ");
 		}
-		
+
 		return str.toString();
 	}
 

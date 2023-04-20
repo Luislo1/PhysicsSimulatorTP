@@ -18,13 +18,13 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 	private List<String> identifiers;
 	private List<SimulatorObserver> observers;
 
-	public PhysicsSimulator(double dt, ForceLaws forces) {
+	public PhysicsSimulator(double dt, ForceLaws forces) { // The Simulator sends notifications to the observers
 		if (dt <= 0 || forces == null)
 			throw new IllegalArgumentException("Invalid parameters to create Physics Simulator");
 		this.dt = dt;
 		this.forces = forces;
 		map = new HashMap<String, BodiesGroup>();
-		mapRO = Collections.unmodifiableMap(map); //Unmodifiable map to prevent observers from modifying data
+		mapRO = Collections.unmodifiableMap(map); // Unmodifiable map to prevent observers from modifying data
 		identifiers = new ArrayList<String>();
 		observers = new ArrayList<SimulatorObserver>();
 	}
@@ -74,7 +74,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 		map.get(id).setForceLaws(fl);
 
 		for (SimulatorObserver sO : observers) {
-			sO.onForceLawsChanged(mapRO.get(id)); //map or mapRO?
+			sO.onForceLawsChanged(mapRO.get(id)); // map or mapRO?
 		}
 	}
 

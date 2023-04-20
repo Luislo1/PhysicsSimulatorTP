@@ -28,6 +28,7 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+@SuppressWarnings("serial")
 public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	private Controller _ctrl;
@@ -50,7 +51,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_ctrl.addObserver(this);
 	}
 
-	private void initGUI() {
+	private void initGUI() { // Contains all buttons, the step spinner and delta-time field
 		setLayout(new BorderLayout());
 		_toolBar = new JToolBar();
 		add(_toolBar, BorderLayout.PAGE_START);
@@ -58,45 +59,31 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_openButton = new JButton();
 		_openButton.setToolTipText("Load an input file into the simulator");
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
-		_openButton.addActionListener((e) -> {
-			 int returnVal = _fc.showOpenDialog(Utils.getWindow(this));
-			 if (returnVal == JFileChooser.APPROVE_OPTION) {
-				 _ctrl.reset();
-				 File file = _fc.getSelectedFile();
-				 file.getPath();
-				 InputStream in;
-				try {
-					in = new FileInputStream(file);
-					 _ctrl.loadData(in);
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-			 }
-			 
+		_openButton.addActionListener((e) -> { // Open the filechooser and select the chosen file to load the data
+			openFile();
 		});
-		
 		_toolBar.add(_openButton);
 		_toolBar.addSeparator();
 
 		_selectButton = new JButton();
 		_selectButton.setToolTipText("Select force laws for groups");
 		_selectButton.setIcon(new ImageIcon("Resources/icons/physics.png"));
-		_selectButton.addActionListener((e) -> {
+		_selectButton.addActionListener((e) -> { // Open the force laws dialog. Creates a new one only if none has been
+													// created yet
 			if (_flDialog == null) {
 				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
 				_flDialog = new ForceLawsDialog(parent, _ctrl);
 			}
-			int status = _flDialog.open();	
+			_flDialog.open();
 		});
 		_toolBar.add(_selectButton);
 
 		_viewerButton = new JButton();
 		_viewerButton.setToolTipText("Open viewer window");
 		_viewerButton.setIcon(new ImageIcon("Resources/icons/viewer.png"));
-		_viewerButton.addActionListener((e) -> {
+		_viewerButton.addActionListener((e) -> { // Creates new viewer window. Multiple can be opened at the same time
 			JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
-			ViewerWindow viewerWindow  = new ViewerWindow(parent, _ctrl);
-
+			new ViewerWindow(parent, _ctrl);
 		});
 		_toolBar.add(_viewerButton);
 		_toolBar.addSeparator();
@@ -104,35 +91,36 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_runButton = new JButton();
 		_runButton.setToolTipText("Run the simulator");
 		_runButton.setIcon(new ImageIcon("Resources/icons/run.png"));
-		_runButton.addActionListener((e) -> {
+		_runButton.addActionListener((e) -> { // Runs the simulator with the amount of steps using delta-time
 			_stopped = false;
 			enableAllButtons(_stopped);
 			_stopButton.setEnabled(!_stopped);
-			 _ctrl.setDeltaTime(Double.parseDouble(_timeField.getText()));
-			 run_sim( (Integer) _stepSpinner.getValue()); 
+			_ctrl.setDeltaTime(Double.parseDouble(_timeField.getText()));
+			run_sim((Integer) _stepSpinner.getValue());
 		});
 		_toolBar.add(_runButton);
 
 		_stopButton = new JButton();
 		_stopButton.setToolTipText("Stop the simulator");
 		_stopButton.setIcon(new ImageIcon("Resources/icons/stop.png"));
-		_stopButton.addActionListener((e) -> _stopped = true);
+		_stopButton.addActionListener((e) -> _stopped = true); // stops the simulator
 		_toolBar.add(_stopButton);
 
 		JLabel stepLabel = new JLabel("Steps:");
 		_toolBar.add(stepLabel);
-		SpinnerModel model = new SpinnerNumberModel(10000, 0, 100000, 100);
-		_stepSpinner = new JSpinner(model); 
+		SpinnerModel model = new SpinnerNumberModel(10000, 0, 100000, 100); // Step spinner starting at 10000, changes
+																			// in intervals of 100 from 0 to 100000
+																			// steps
+		_stepSpinner = new JSpinner(model);
 		_stepSpinner.setMinimumSize(new Dimension(70, 50));
 		_stepSpinner.setPreferredSize(new Dimension(70, 50));
 		_stepSpinner.setMaximumSize(new Dimension(70, 50));
 		_stepSpinner.setToolTipText("Simulation steps to run: 1-10000");
 		_toolBar.add(_stepSpinner);
 
-		
 		JLabel deltaLabel = new JLabel("Delta-Time: ");
 		_toolBar.add(deltaLabel);
-		_timeField = new JTextField("2500.0");
+		_timeField = new JTextField("2500.0"); // Delta-time text field that can be edited
 		_timeField.setToolTipText("Real time (seconds) corresponding to a step");
 		_timeField.setMinimumSize(new Dimension(50, 50));
 		_timeField.setPreferredSize(new Dimension(50, 50));
@@ -148,11 +136,27 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_quitButton.addActionListener((e) -> Utils.quit(this));
 		_toolBar.add(_quitButton);
 
-		 _fc = new JFileChooser(); 
+		_fc = new JFileChooser();
 
 	}
 
-	private void run_sim(int n) {
+	private void openFile() {
+		int returnVal = _fc.showOpenDialog(Utils.getWindow(this));
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			_ctrl.reset();
+			File file = _fc.getSelectedFile();
+			file.getPath();
+			InputStream in;
+			try {
+				in = new FileInputStream(file);
+				_ctrl.loadData(in);
+			} catch (FileNotFoundException e1) {
+			}
+		}
+	}
+
+	private void run_sim(int n) { // Run the simulator n steps with recursive calls. Use invokeLater() to update
+									// the simulator each step
 		if (n > 0 && !_stopped) {
 
 			try {
@@ -170,7 +174,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		}
 	}
 
-	private void enableAllButtons(boolean activate) { //Sets all buttons to the boolean activate.
+	private void enableAllButtons(boolean activate) { // Sets all buttons to the boolean activate
 		_quitButton.setEnabled(activate);
 		_openButton.setEnabled(activate);
 		_selectButton.setEnabled(activate);
@@ -178,7 +182,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_runButton.setEnabled(activate);
 		_stopButton.setEnabled(activate);
 	}
-	
+
 	@Override
 	public void onDeltaTimeChanged(double dt) {
 		Double deltaTime = dt;

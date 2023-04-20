@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
@@ -276,7 +275,7 @@ public class Main {
 			in = new FileInputStream(_inFile);
 
 		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
-		if (in != null) 
+		if (in != null)
 			controller.loadData(in);
 
 		try {

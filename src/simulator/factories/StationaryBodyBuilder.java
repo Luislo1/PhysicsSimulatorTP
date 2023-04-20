@@ -19,20 +19,20 @@ public class StationaryBodyBuilder extends Builder<Body> {
 		String gid = null;
 		JSONArray p = null;
 		Double m = 0.0;
-		
+
 		if (data.has("id")) {
 			id = data.getString("id");
 		}
 		if (id == null)
 			throw new IllegalArgumentException("Missing id parameter");
-		
+
 		if (data.has("gid")) {
 			gid = data.getString("gid");
 		}
 		if (gid == null)
 			throw new IllegalArgumentException("Missing group id parameter");
 		if (data.has("p")) {
-			p  = data.getJSONArray("p");
+			p = data.getJSONArray("p");
 		}
 		if (p == null)
 			throw new IllegalArgumentException("Missing vector position");
@@ -43,13 +43,13 @@ public class StationaryBodyBuilder extends Builder<Body> {
 			m = data.getDouble("m");
 		}
 		if (m == 0.0)
-			 throw new IllegalArgumentException("Missing mass parameter"); 
+			throw new IllegalArgumentException("Missing mass parameter");
 		return new StationaryBody(id, gid, p1, m);
 	}
 
 	@Override
 	public void fillInData(JSONObject data) {
-		
+
 	}
 
 }
