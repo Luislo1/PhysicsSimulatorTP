@@ -101,7 +101,7 @@ public class ViewerWindow extends JFrame implements SimulatorObserver {
 	}
 
 	@Override
-	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) { // TODO Do we need to check if there can be more than 1 group repeated?
+	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
 		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()){
 		    BodiesGroup value = entry.getValue();
 		    _viewer.addGroup(value);

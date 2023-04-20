@@ -129,7 +129,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 			try {
 			setNewForceLaws();
 			} catch (Exception exc) {
-				Utils.showErrorMsg("Problem encountered with new force laws, enter a valid value"); //TODO check message and if we have to separate catches
+				Utils.showErrorMsg("Problem encountered with new force laws, enter a valid value");
 				
 			}	
 			_status = 1;
@@ -156,29 +156,35 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		return _status;
 	}
 	
-	private void setNewForceLaws() { // TODO Ask if once we put an int value it has to display an error.
-		JSONObject info = new JSONObject();
-		for (int i = 0; i < _dataTableModel.getRowCount(); i++) { //(a)
-			String value =_dataTableModel.getValueAt(i, 1).toString();
-			
-			if(value.contains("[")) { // TODO Ask if it's a good solution.
-				String str = value.replace("[", "").replace("]", ""); // remove square brackets
-				String[] parts = str.split(","); // split into two substrings
-				double num1 = Double.parseDouble(parts[0].trim()); // convert first substring to double
-				double num2 = Double.parseDouble(parts[1].trim()); // convert second substring to double
-				Vector2D v = new Vector2D(num1, num2);
-				info.put(_dataTableModel.getValueAt(i, 0).toString(), v.asJSONArray());
-			}
-			else if(!value.isEmpty()){
-				info.put(_dataTableModel.getValueAt(i, 0).toString(),Double.parseDouble(_dataTableModel.getValueAt(i, 1).toString()));
-			}
-			
-			
-		}
+	private void setNewForceLaws() {
+		JSONObject info = new JSONObject(getJSON());// (a)
 		JSONObject data = new JSONObject(); //(b)
 		data.put("data", info);
 		data.put("type", _forceLawsInfo.get(_selectedLawsIndex).getString("type"));
 		_ctrl.setForceLaws(_groupsModel.getSelectedItem().toString(), data); // (c)
+	}
+	
+	private String getJSON() { //Builds a string e.g: "c" : "[1,1]" that corresponds to a JSON string to be parsed in the builders
+		StringBuilder s = new StringBuilder();
+		s.append('{');
+		for (int i = 0; i < _dataTableModel.getRowCount(); i++) {
+			String k = _dataTableModel.getValueAt(i, 0).toString();
+			String v = _dataTableModel.getValueAt(i, 1).toString();
+			if (!v.isEmpty()) {
+				s.append('"');
+				s.append(k);
+				s.append('"');
+				s.append(':');
+				s.append(v);
+				s.append(',');
+			}
+		}
+
+		if (s.length() > 1)
+			s.deleteCharAt(s.length() - 1);
+		s.append('}');
+
+		return s.toString();
 	}
 	
 	private void fillInTable(int index) {

@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,18 +49,17 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		initGUI();
 		_ctrl.addObserver(this);
 	}
-	// TODO check rezizing problem.
+
 	private void initGUI() {
 		setLayout(new BorderLayout());
 		_toolBar = new JToolBar();
 		add(_toolBar, BorderLayout.PAGE_START);
 
-		// TODO make sure correct layout; use glue etc
 		_openButton = new JButton();
 		_openButton.setToolTipText("Load an input file into the simulator");
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
 		_openButton.addActionListener((e) -> {
-			 int returnVal = _fc.showOpenDialog(Utils.getWindow(this)); //TODO should the file chooser open on the input path?
+			 int returnVal = _fc.showOpenDialog(Utils.getWindow(this));
 			 if (returnVal == JFileChooser.APPROVE_OPTION) {
 				 _ctrl.reset();
 				 File file = _fc.getSelectedFile();
@@ -113,27 +113,30 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		});
 		_toolBar.add(_runButton);
 
-		//_toolBar.add(Box.createGlue());
 		_stopButton = new JButton();
 		_stopButton.setToolTipText("Stop the simulator");
 		_stopButton.setIcon(new ImageIcon("Resources/icons/stop.png"));
 		_stopButton.addActionListener((e) -> _stopped = true);
 		_toolBar.add(_stopButton);
 
-		_toolBar.add(Box.createGlue());
 		JLabel stepLabel = new JLabel("Steps:");
 		_toolBar.add(stepLabel);
-		SpinnerModel model = new SpinnerNumberModel(10000, 0, 100000, 100); // TODO What is the Max value of the spinner?
+		SpinnerModel model = new SpinnerNumberModel(10000, 0, 100000, 100);
 		_stepSpinner = new JSpinner(model); 
+		_stepSpinner.setMinimumSize(new Dimension(70, 50));
+		_stepSpinner.setPreferredSize(new Dimension(70, 50));
+		_stepSpinner.setMaximumSize(new Dimension(70, 50));
 		_stepSpinner.setToolTipText("Simulation steps to run: 1-10000");
 		_toolBar.add(_stepSpinner);
 
 		
-		_toolBar.add(Box.createGlue());
 		JLabel deltaLabel = new JLabel("Delta-Time: ");
 		_toolBar.add(deltaLabel);
-		_timeField = new JTextField("2500.0"); //TODO this time field must have a fixed size value (so that when we expand it doesnt expand)
+		_timeField = new JTextField("2500.0");
 		_timeField.setToolTipText("Real time (seconds) corresponding to a step");
+		_timeField.setMinimumSize(new Dimension(50, 50));
+		_timeField.setPreferredSize(new Dimension(50, 50));
+		_timeField.setMaximumSize(new Dimension(50, 50));
 		_toolBar.add(_timeField);
 
 		// Quit Button
@@ -145,7 +148,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_quitButton.addActionListener((e) -> Utils.quit(this));
 		_toolBar.add(_quitButton);
 
-		 _fc = new JFileChooser("C:\\Users\\LUIS3\\Documents\\GitHub\\PhysicsSimulatorTP\\resources\\examples\\input");
+		 _fc = new JFileChooser(); 
 
 	}
 
@@ -177,7 +180,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	}
 	
 	@Override
-	public void onDeltaTimeChanged(double dt) { // TODO Ask when is this used?
+	public void onDeltaTimeChanged(double dt) {
 		Double deltaTime = dt;
 		_timeField.setText(deltaTime.toString());
 	}
@@ -192,6 +195,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
+		Double deltaTime = dt;
+		_timeField.setText(deltaTime.toString());
 	}
 
 	@Override

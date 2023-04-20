@@ -19,11 +19,11 @@ public class MainWindow extends JFrame {
 	public MainWindow(Controller ctrl) {
 		super("Physics Simulator");
 		_ctrl = ctrl;
-		initGUI(); // TODO check the horizontal resizing, vertical resizing works.
+		initGUI();
 	}
 
 	private void initGUI() {
-		JPanel mainPanel = new JPanel(new BorderLayout());// TODO check layout works as intended
+		JPanel mainPanel = new JPanel(new BorderLayout());
 		setContentPane(mainPanel);
 		
 		JPanel controlPanel = new ControlPanel(_ctrl);
@@ -38,7 +38,7 @@ public class MainWindow extends JFrame {
 		
 		
 		
-		JPanel groupsTable = new InfoTable("Groups", new GroupsTableModel(_ctrl)); //TODO static type InfoTable??
+		JPanel groupsTable = new InfoTable("Groups", new GroupsTableModel(_ctrl));
 		groupsTable.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(groupsTable);
 		
