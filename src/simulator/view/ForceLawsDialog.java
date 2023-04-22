@@ -73,9 +73,7 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		_dataTableModel = new DefaultTableModel() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				if (column == 1) // Make column 1 editable
-					return true;
-				return false;
+				return (column == 1);// Make column 1 editable
 			}
 		};
 		_dataTableModel.setColumnIdentifiers(_headers);
@@ -155,7 +153,12 @@ public class ForceLawsDialog extends JDialog implements SimulatorObserver {
 		JSONObject data = new JSONObject(); // (b)
 		data.put("data", info);
 		data.put("type", _forceLawsInfo.get(_selectedLawsIndex).getString("type"));
+		try {
 		_ctrl.setForceLaws(_groupsModel.getSelectedItem().toString(), data); // (c)
+		} catch (Exception e) {
+			Utils.showErrorMsg("Invalid force law");
+		}
+		
 	}
 
 	private String getJSON() { // Builds a string e.g: "c" : "[1,1]" that corresponds to a JSON string to be
