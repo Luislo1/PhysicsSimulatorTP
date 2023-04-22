@@ -22,6 +22,9 @@ public abstract class Builder<T> {
 		JSONObject info = new JSONObject();
 		info.put("type", _typeTag);
 		info.put("desc", _desc);
+		JSONObject data = new JSONObject();
+		fillInData(data);
+		info.put("data", data);
 		return info;
 	}
 

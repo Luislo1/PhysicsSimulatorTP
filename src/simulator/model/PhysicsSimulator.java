@@ -18,7 +18,7 @@ public class PhysicsSimulator implements Observable<SimulatorObserver> {
 	private List<String> identifiers;
 	private List<SimulatorObserver> observers;
 
-	public PhysicsSimulator(double dt, ForceLaws forces) { // The Simulator sends notifications to the observers
+	public PhysicsSimulator(ForceLaws forces, double dt) { // The Simulator sends notifications to the observers
 		if (dt <= 0 || forces == null)
 			throw new IllegalArgumentException("Invalid parameters to create Physics Simulator");
 		this.dt = dt;

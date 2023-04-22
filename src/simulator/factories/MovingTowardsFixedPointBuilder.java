@@ -28,16 +28,7 @@ public class MovingTowardsFixedPointBuilder extends Builder<ForceLaws> {
 		}
 		return new MovingTowardsFixedPoint(c1, g); // default values c1 = [0,0] g = 9.81.
 	}
-
-	@Override
-	public JSONObject getInfo() {
-		JSONObject info = super.getInfo();
-		JSONObject data = new JSONObject();
-		fillInData(data);
-		info.put("data", data);
-		return info; // test
-	}
-
+	
 	@Override
 	public void fillInData(JSONObject data) {
 		data.put("c", "the point towards which bodies move (e.g., [100.0, 50.0])").put("g",

@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class BodiesGroup implements Iterable<Body> {
 	private String gid;
 	private ForceLaws forces;
-	private List<Body> list, listRO;
+	private List<Body> list;
 
 	public BodiesGroup(String gid, ForceLaws forces) {
 		if (gid == null || forces == null || gid.trim().length() <= 0)
@@ -19,7 +19,6 @@ public class BodiesGroup implements Iterable<Body> {
 		this.gid = gid;
 		this.forces = forces;
 		list = new ArrayList<Body>();
-		listRO = Collections.unmodifiableList(list);
 	}
 
 	public String getId() {
@@ -74,7 +73,7 @@ public class BodiesGroup implements Iterable<Body> {
 	@Override
 	public Iterator<Body> iterator() {
 		return new Iterator<Body>() {
-			Iterator<Body> it = listRO.iterator();
+			Iterator<Body> it = list.iterator();
 
 			@Override
 			public boolean hasNext() {

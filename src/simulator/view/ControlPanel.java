@@ -155,7 +155,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			try {
 				in = new FileInputStream(file);
 				_ctrl.loadData(in);
-			} catch (FileNotFoundException e1) {
+			} catch (Exception e1) {
+				Utils.showErrorMsg("Incorrect file");
 			}
 		}
 	}

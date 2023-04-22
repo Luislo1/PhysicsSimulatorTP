@@ -64,12 +64,6 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		for (Body b : _bodies) {
-			for (Body b2 : groups.get(b.getgId())) { // For bodies in the same group as body b.
-				if (b2.equals(b))
-					b = b2;
-			}
-		}
 		fireTableDataChanged();
 	}
 

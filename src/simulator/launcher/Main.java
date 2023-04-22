@@ -172,13 +172,14 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		if (_mode != null) // Need to be before _mode.equals().
-			if (_inFile == null && _mode.equals("batch"))
-				throw new ParseException("In batch mode an input file of bodies is required");
+		if (_inFile == null && _mode.equals("batch"))
+			throw new ParseException("In batch mode an input file of bodies is required");
 	}
 
-	private static void parseModeOption(CommandLine line) {
-		_mode = line.getOptionValue("m");
+	private static void parseModeOption(CommandLine line) throws ParseException {
+		_mode = line.getOptionValue("m", _modeDefaultValue);
+		if(!(_mode.equals("gui") || _mode.equals("batch")))
+			throw new ParseException("Invalid mode " + _mode);
 	}
 
 	private static void parseDeltaTimeOption(CommandLine line) throws ParseException {
@@ -256,7 +257,7 @@ public class Main {
 	private static void startBatchMode() throws Exception { // Create a new simulator, input and output stream, and a
 															// controller that runs the simulation for n steps
 
-		PhysicsSimulator simulator = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo));
+		PhysicsSimulator simulator = new PhysicsSimulator(_forceLawsFactory.createInstance(_forceLawsInfo), _dtime);
 		InputStream in = new FileInputStream(_inFile);
 		OutputStream out = System.out;
 		if (_outFile != null)
@@ -270,7 +271,7 @@ public class Main {
 	private static void startGUIMode() throws Exception {
 		InputStream in = null;
 
-		PhysicsSimulator simulator = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo));
+		PhysicsSimulator simulator = new PhysicsSimulator(_forceLawsFactory.createInstance(_forceLawsInfo) ,_dtime);
 		if (_inFile != null)
 			in = new FileInputStream(_inFile);
 
@@ -289,7 +290,7 @@ public class Main {
 	private static void start(String[] args) throws Exception {
 		parseArgs(args);
 
-		if (_mode != null && _mode.equals("batch"))
+		if (_mode.equals("batch"))
 			startBatchMode();
 		else
 			startGUIMode();

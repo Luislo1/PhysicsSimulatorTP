@@ -24,7 +24,7 @@ class PhysicsSimulatorTest {
 		Body b7 = new MovingBody("B09", "Andromeda", new Vector2D(1.0, 3.0), new Vector2D(3.4, 1.2), 30.0);
 		Body b8 = new MovingBody("B11", "Andromeda", new Vector2D(4.0, 9.0), new Vector2D(3.4, 1.2), 40.0);
 
-		PhysicsSimulator fs = new PhysicsSimulator(2.0, new NewtonUniversalGravitation(10));
+		PhysicsSimulator fs = new PhysicsSimulator(new NewtonUniversalGravitation(10), 2.0);
 
 		fs.addGroup("milkyway");
 		fs.addGroup("Andromeda");
@@ -191,16 +191,16 @@ class PhysicsSimulatorTest {
 	void errors_handling() {
 		// force laws cannot be null
 		assertThrowsExactly(IllegalArgumentException.class,
-				() -> new PhysicsSimulator(2.0, null), "Force laws cannot be null");
+				() -> new PhysicsSimulator(null, 2.0), "Force laws cannot be null");
 
 		// delta-time must be positive
 		assertThrowsExactly(IllegalArgumentException.class,
-				() -> new PhysicsSimulator(0.0, null), "Delta-time must be positive");
+				() -> new PhysicsSimulator(null, 0.0), "Delta-time must be positive");
 		
 		assertThrowsExactly(IllegalArgumentException.class,
-				() -> new PhysicsSimulator(-1.0, null), "Delta-time must be positive");
+				() -> new PhysicsSimulator(null, -1.0), "Delta-time must be positive");
 
-		PhysicsSimulator fs = new PhysicsSimulator(2.0, new NewtonUniversalGravitation(10));
+		PhysicsSimulator fs = new PhysicsSimulator(new NewtonUniversalGravitation(10), 2.0);
 
 		fs.addGroup("milkyway");
 		
