@@ -23,11 +23,13 @@ import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
 import simulator.factories.MovingBodyBuilder;
 import simulator.factories.MovingTowardsFixedPointBuilder;
+import simulator.factories.MovingTowardsTwoFixedPointsBuilder;
 import simulator.factories.NewtonUniversalGravitationBuilder;
 import simulator.factories.NoForceBuilder;
 import simulator.factories.StationaryBodyBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
+import simulator.model.MovingTowardsTwoFixedPoints;
 import simulator.model.PhysicsSimulator;
 import simulator.view.MainWindow;
 
@@ -64,6 +66,7 @@ public class Main {
 		ArrayList<Builder<ForceLaws>> forceLawsBuilders = new ArrayList<>();
 		forceLawsBuilders.add(new NewtonUniversalGravitationBuilder());
 		forceLawsBuilders.add(new MovingTowardsFixedPointBuilder());
+		forceLawsBuilders.add(new MovingTowardsTwoFixedPointsBuilder());
 		forceLawsBuilders.add(new NoForceBuilder());
 		_forceLawsFactory = new BuilderBasedFactory<ForceLaws>(forceLawsBuilders);
 	}
