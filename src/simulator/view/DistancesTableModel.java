@@ -13,18 +13,28 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
-public class TotalForceTableModel extends AbstractTableModel implements SimulatorObserver {
+@SuppressWarnings("serial")
+public class DistancesTableModel extends AbstractTableModel implements SimulatorObserver {
 
-	Map<String, Vector2D> _totalForce;
-	String[] _header = { "Body", "Total Forces" };
+	String[] _header = { "Body", "Accumulated Distance" };
 	List<Body> _bodies;
+	Map<String, Double> _accDistance;
+	Map<String, Vector2D> _prevDistance;
 
-	public TotalForceTableModel(Controller ctrl) {
-		_totalForce = new HashMap<>();
+	DistancesTableModel(Controller ctrl) {
 		_bodies = new ArrayList<>();
+		_accDistance = new HashMap<>();
+		_prevDistance = new HashMap<>();
 		ctrl.addObserver(this);
 	}
 	
+	public void resetDistances() {
+		for (Map.Entry<String, Double> entry : _accDistance.entrySet()) {
+			_accDistance.put(entry.getKey(), 0.0);
+		}
+		fireTableDataChanged();
+	}
+
 	public String getColumnName(int col) {
 		return _header[col];
 	}
@@ -45,10 +55,10 @@ public class TotalForceTableModel extends AbstractTableModel implements Simulato
 		Body b = _bodies.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			s = b.getId();
+			s = _bodies.get(rowIndex).getId();
 			break;
 		case 1:
-			s = _totalForce.get(b.getId()+b.getgId());
+			s = _accDistance.get(b.getId()+b.getgId());
 			break;
 		default:
 			break;
@@ -61,9 +71,17 @@ public class TotalForceTableModel extends AbstractTableModel implements Simulato
 		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
 			BodiesGroup value = entry.getValue();
 			for (Body b : value) {
-				Vector2D currTotal = _totalForce.get(b.getId()+b.getgId());
-				Vector2D currForce = b.getForce();
-				_totalForce.put(b.getId()+b.getgId(), currTotal.plus(currForce));				
+				Vector2D currDistance = b.getPosition();
+				Vector2D prevDistance = new Vector2D();
+				for (Map.Entry<String, Vector2D> oldEntry : _prevDistance.entrySet()) { // java.util.Map.get(Object)" is null
+					if (oldEntry.getKey().equals(b.getId()+b.getgId())) {
+						prevDistance = oldEntry.getValue();
+					}
+				}
+				double newDistance = currDistance.distanceTo(prevDistance);
+				double totDistance = _accDistance.get(b.getId()+b.getgId());
+				_accDistance.put(b.getId()+b.getgId(), totDistance + newDistance);
+				_prevDistance.put(b.getId()+b.getgId(), currDistance);
 			}
 		}
 		fireTableDataChanged();
@@ -72,7 +90,8 @@ public class TotalForceTableModel extends AbstractTableModel implements Simulato
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
 		_bodies.clear();
-		_totalForce.clear();
+		_accDistance.clear();
+		_prevDistance.clear();
 		fireTableStructureChanged();
 	}
 
@@ -82,7 +101,8 @@ public class TotalForceTableModel extends AbstractTableModel implements Simulato
 			BodiesGroup value = entry.getValue();
 			for (Body b : value) {
 				_bodies.add(b);
-				_totalForce.put(b.getId()+b.getgId(), new Vector2D());				
+				_accDistance.put(b.getId()+b.getgId(), 0.0);
+				_prevDistance.put(b.getId()+b.getgId(), new Vector2D());
 			}
 		}
 		fireTableStructureChanged();
@@ -90,12 +110,14 @@ public class TotalForceTableModel extends AbstractTableModel implements Simulato
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
+		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
 		_bodies.add(b);
-		_totalForce.put(b.getId()+b.getgId(), new Vector2D());
+		_accDistance.put(b.getId()+b.getgId(), 0.0);
+		_prevDistance.put(b.getId()+b.getgId(), new Vector2D());
 		fireTableStructureChanged();
 	}
 

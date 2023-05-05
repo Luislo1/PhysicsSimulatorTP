@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import simulator.misc.Vector2D;
 import simulator.model.Body;
 import simulator.model.MassLosingBody;
-import simulator.model.MovingBody;
 
 public class MassLosingBodyBuilder extends Builder<Body> {
 

@@ -22,6 +22,7 @@ import simulator.factories.Builder;
 import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
 import simulator.factories.MassLosingBodyBuilder;
+import simulator.factories.MovingAroundBodyGreaterMassBuilder;
 import simulator.factories.MovingBodyBuilder;
 import simulator.factories.MovingTowardsFixedPointBuilder;
 import simulator.factories.MovingTowardsTwoFixedPointsBuilder;
@@ -69,6 +70,7 @@ public class Main {
 		forceLawsBuilders.add(new MovingTowardsFixedPointBuilder());
 		forceLawsBuilders.add(new NoForceBuilder());
 		forceLawsBuilders.add(new  MovingTowardsTwoFixedPointsBuilder());
+		forceLawsBuilders.add(new MovingAroundBodyGreaterMassBuilder());
 		_forceLawsFactory = new BuilderBasedFactory<ForceLaws>(forceLawsBuilders);
 	}
 

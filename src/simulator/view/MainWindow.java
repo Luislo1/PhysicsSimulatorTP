@@ -44,6 +44,11 @@ public class MainWindow extends JFrame {
 		JPanel bodiesTable = new InfoTable("Bodies", new BodiesTableModel(_ctrl));
 		bodiesTable.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(bodiesTable);
+		
+		JPanel accDistanceTable = new InfoDistanceTable("Accumulated Distances", new DistancesTableModel(_ctrl));
+		accDistanceTable.setPreferredSize(new Dimension(500, 250));
+		contentPanel.add(accDistanceTable);
+		
 
 		addWindowListener(new WindowListener() {
 
