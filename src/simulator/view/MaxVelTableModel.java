@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +13,15 @@ import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
 @SuppressWarnings("serial")
-public class BodiesTableModel extends AbstractTableModel implements SimulatorObserver {
+public class MaxVelTableModel extends AbstractTableModel implements SimulatorObserver {
 
-	String[] _header = { "Id", "gId", "Mass", "Velocity", "Position", "Force", "MaxVel" };
+	private String[] _header = { "Body", "Group", "Max Vel" };
 	List<Body> _bodies;
+	Map<Body, Double> _vel;
 
-	BodiesTableModel(Controller ctrl) {
+	MaxVelTableModel(Controller ctrl) {
 		_bodies = new ArrayList<>();
+		_vel = new HashMap<>();
 		ctrl.addObserver(this);
 	}
 
@@ -28,7 +31,7 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public int getRowCount() {
-		return _bodies == null ? 0 : _bodies.size();
+		return _vel.entrySet().size();
 	}
 
 	@Override
@@ -39,24 +42,18 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
+		Body b = _bodies.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			s = _bodies.get(rowIndex).getId();
+			s = b.getId();
 			break;
 		case 1:
-			s = _bodies.get(rowIndex).getgId();
+			s = b.getgId();
 			break;
 		case 2:
-			s = _bodies.get(rowIndex).getMass();
+			s = String.valueOf(_vel.get(b));
 			break;
-		case 3:
-			s = _bodies.get(rowIndex).getVelocity();
-			break;
-		case 4:
-			s = _bodies.get(rowIndex).getPosition();
-			break;
-		case 5:
-			s = _bodies.get(rowIndex).getForce();
+		default:
 			break;
 		}
 		return s;
@@ -64,41 +61,42 @@ public class BodiesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		fireTableDataChanged();
+		for (BodiesGroup bg : groups.values()) {
+			for (Body b : bg) {
+				double currentVelocity = b.getVelocity().magnitude();
+				double maxVelocity = _vel.get(b);
+				if (currentVelocity > maxVelocity) {
+					_vel.put(b, currentVelocity);
+				}
+			}
+		}
+
 	}
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
+		_vel.clear();
 		_bodies.clear();
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
-			BodiesGroup value = entry.getValue();
-			for (Body b : value)
-				_bodies.add(b);
-		}
-		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
-			BodiesGroup value = entry.getValue();
-			for (Body b : value)
+		for (BodiesGroup bg : groups.values()) {
+			for (Body b : bg) {
+				_vel.put(b, b.getVelocity().magnitude());
 				_bodies.add(b);
+			}
 		}
-		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		for (Body b : g)
-			_bodies.add(b);
-		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
+		_vel.put(b, b.getVelocity().magnitude());
 		_bodies.add(b);
-		fireTableStructureChanged();
 	}
 
 	@Override

@@ -40,9 +40,15 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JButton _viewerButton;
 	private JButton _runButton;
 	private JButton _stopButton;
+	private JButton _maxButton;
+	private JButton _totalForceButton;
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
+	private TotalForceDialog _tFDialog;
+	private MaxVelocityDialog _mVDialog;
+	private MaxVelTableModel _maxVelTableModel;
+	private TotalForceTableModel _totalForceTableModel;
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
@@ -55,6 +61,32 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_toolBar = new JToolBar();
 		add(_toolBar, BorderLayout.PAGE_START);
 
+		//Max Velocity button
+		
+		//create it before so that the values are not reset everytime we open the dialog, and it tracks since the beginning
+		_maxVelTableModel = new MaxVelTableModel(_ctrl);
+		_totalForceTableModel = new TotalForceTableModel(_ctrl);
+		
+		_maxButton = new JButton();
+		_maxButton.setToolTipText("Max Velocity");
+		_maxButton.setIcon(new ImageIcon("Resources/icons/physics.png"));
+		_maxButton.addActionListener((e) -> { 
+			Frame parentmV = (Frame) SwingUtilities.getWindowAncestor(this);
+			_mVDialog = new MaxVelocityDialog(parentmV, _maxVelTableModel);
+		});
+		_toolBar.add(_maxButton);
+		
+		_totalForceButton = new JButton();
+		_totalForceButton.setToolTipText("Total Force");
+		_totalForceButton.setIcon(new ImageIcon("Resources/icons/physics.png"));
+		_totalForceButton.addActionListener((e) -> { // Open the force laws dialog. Creates a new one only if none has been
+													// created yet
+				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+				_tFDialog = new TotalForceDialog(parent, _totalForceTableModel);
+		});
+		_toolBar.add(_totalForceButton);
+		
+		
 		_openButton = new JButton();
 		_openButton.setToolTipText("Load an input file into the simulator");
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
@@ -140,7 +172,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_quitButton.addActionListener((e) -> Utils.quit(this));
 		_toolBar.add(_quitButton);
 
-		_fc = new JFileChooser();
+		_fc = new JFileChooser("C:\\Users\\LUIS3\\Documents\\GitHub\\PhysicsSimulatorTP\\resources\\examples\\input");
 
 	}
 
@@ -186,6 +218,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_viewerButton.setEnabled(activate);
 		_runButton.setEnabled(activate);
 		_stopButton.setEnabled(activate);
+		_maxButton.setEnabled(activate);;
+		_totalForceButton.setEnabled(activate);;
 	}
 
 	@Override

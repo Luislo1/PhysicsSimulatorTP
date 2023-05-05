@@ -21,8 +21,10 @@ import simulator.control.Controller;
 import simulator.factories.Builder;
 import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
+import simulator.factories.MassLosingBodyBuilder;
 import simulator.factories.MovingBodyBuilder;
 import simulator.factories.MovingTowardsFixedPointBuilder;
+import simulator.factories.MovingTowardsTwoFixedPointsBuilder;
 import simulator.factories.NewtonUniversalGravitationBuilder;
 import simulator.factories.NoForceBuilder;
 import simulator.factories.StationaryBodyBuilder;
@@ -60,11 +62,13 @@ public class Main {
 		ArrayList<Builder<Body>> bodyBuilders = new ArrayList<>();
 		bodyBuilders.add(new MovingBodyBuilder());
 		bodyBuilders.add(new StationaryBodyBuilder());
+		bodyBuilders.add(new MassLosingBodyBuilder());
 		_bodyFactory = new BuilderBasedFactory<Body>(bodyBuilders);
 		ArrayList<Builder<ForceLaws>> forceLawsBuilders = new ArrayList<>();
 		forceLawsBuilders.add(new NewtonUniversalGravitationBuilder());
 		forceLawsBuilders.add(new MovingTowardsFixedPointBuilder());
 		forceLawsBuilders.add(new NoForceBuilder());
+		forceLawsBuilders.add(new  MovingTowardsTwoFixedPointsBuilder());
 		_forceLawsFactory = new BuilderBasedFactory<ForceLaws>(forceLawsBuilders);
 	}
 
@@ -263,9 +267,14 @@ public class Main {
 		if (_outFile != null)
 			out = new FileOutputStream(_outFile);
 
+		MaxVel mv = new MaxVel(); //TODO new maxvelocity function good example of modifcation to batch mode, done by creating a class that implements observer to access the data changes
+		simulator.addObserver(mv);
+		
 		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
 		controller.loadData(in);
 		controller.run(_steps, out);
+		
+		mv.report();
 	}
 
 	private static void startGUIMode() throws Exception {
