@@ -43,6 +43,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
+	private TotalTimeDialog _totalTimeDialog;
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
@@ -76,6 +77,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			_flDialog.open();
 		});
 		_toolBar.add(_selectButton);
+		
+		// Time TODO
 
 		_viewerButton = new JButton();
 		_viewerButton.setToolTipText("Open viewer window");
@@ -141,6 +144,39 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_toolBar.add(_quitButton);
 
 		_fc = new JFileChooser();
+		
+		// Total force per body.
+		_selectButton = new JButton();
+		_selectButton.setToolTipText("Total force per body");
+		//TODO ¿Qué foto ponemos?
+		_selectButton.addActionListener((e) -> {
+			if(_totalTimeDialog == null) {
+				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+				_totalTimeDialog = new TotalTimeDialog();// TODO add arguments.
+				_flDialog = new ForceLawsDialog(parent, _ctrl);
+			}
+			_totalTimeDialog.open();
+			
+		});
+		_toolBar.add(_totalTimeDialog);
+		
+		
+		
+		
+		/*
+		_selectButton = new JButton();
+		_selectButton.setToolTipText("Select force laws for groups");
+		_selectButton.setIcon(new ImageIcon("Resources/icons/physics.png"));
+		_selectButton.addActionListener((e) -> { // Open the force laws dialog. Creates a new one only if none has been
+													// created yet
+			if (_flDialog == null) {
+				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+				_flDialog = new ForceLawsDialog(parent, _ctrl);
+			}
+			_flDialog.open();
+		});
+		_toolBar.add(_selectButton);
+		 */
 
 	}
 
