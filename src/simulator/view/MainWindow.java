@@ -46,7 +46,7 @@ public class MainWindow extends JFrame {
 		bodiesTable.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(bodiesTable);
 		
-		JTextArea massLosingTextArea = new MassLosingTextArea(_ctrl);
+		MassLosingPanel massLosingTextArea = new MassLosingPanel(_ctrl);
 		massLosingTextArea.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(massLosingTextArea);
 		
