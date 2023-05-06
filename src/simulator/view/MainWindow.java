@@ -8,6 +8,7 @@ import java.awt.event.WindowListener;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import simulator.control.Controller;
 
@@ -44,6 +45,10 @@ public class MainWindow extends JFrame {
 		JPanel bodiesTable = new InfoTable("Bodies", new BodiesTableModel(_ctrl));
 		bodiesTable.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(bodiesTable);
+		
+		JTextArea massLosingTextArea = new MassLosingTextArea(_ctrl);
+		massLosingTextArea.setPreferredSize(new Dimension(500, 250));
+		contentPanel.add(massLosingTextArea);
 		
 		JPanel accDistanceTable = new InfoDistanceTable("Accumulated Distances", new DistancesTableModel(_ctrl));
 		accDistanceTable.setPreferredSize(new Dimension(500, 250));

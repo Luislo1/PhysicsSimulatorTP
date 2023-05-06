@@ -8,13 +8,17 @@
     }
   } ],
   "bodies" : [ {
-    "type" : "mv_body",
+    "type" : "tempsens",
     "data" : {
       "id" : "b1",
       "gid" : "g1",
       "p" : [ 0.0, 4.5E10 ],
       "v" : [ 10000.0, 0.0 ],
-      "m" : 1.5E30
+      "m" : 1.5E30,
+      "minT" : 1e5,
+      "maxT" : 10e5,
+      "redF" : 0.3,
+      "incF" : 10e-5
     }
   }, {
     "type" : "mv_body",

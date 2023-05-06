@@ -29,6 +29,7 @@ import simulator.factories.MovingTowardsTwoFixedPointsBuilder;
 import simulator.factories.NewtonUniversalGravitationBuilder;
 import simulator.factories.NoForceBuilder;
 import simulator.factories.StationaryBodyBuilder;
+import simulator.factories.TempSensBodyBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
 import simulator.model.PhysicsSimulator;
@@ -64,6 +65,7 @@ public class Main {
 		bodyBuilders.add(new MovingBodyBuilder());
 		bodyBuilders.add(new StationaryBodyBuilder());
 		bodyBuilders.add(new MassLosingBodyBuilder());
+		bodyBuilders.add(new TempSensBodyBuilder());
 		_bodyFactory = new BuilderBasedFactory<Body>(bodyBuilders);
 		ArrayList<Builder<ForceLaws>> forceLawsBuilders = new ArrayList<>();
 		forceLawsBuilders.add(new NewtonUniversalGravitationBuilder());
