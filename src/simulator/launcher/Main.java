@@ -29,7 +29,6 @@ import simulator.factories.NoForceBuilder;
 import simulator.factories.StationaryBodyBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
-import simulator.model.MovingTowardsTwoFixedPoints;
 import simulator.model.PhysicsSimulator;
 import simulator.view.MainWindow;
 
