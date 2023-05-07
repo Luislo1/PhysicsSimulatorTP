@@ -35,6 +35,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JFileChooser _fc;
 	private boolean _stopped = true;
 	private JButton _quitButton;
+	private JButton _maxForceButton;
 	private JButton _openButton;
 	private JButton _selectButton;
 	private JButton _viewerButton;
@@ -44,6 +45,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
 	private TotalTimeDialog _totalTimeDialog;
+	
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
@@ -55,7 +57,15 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		setLayout(new BorderLayout());
 		_toolBar = new JToolBar();
 		add(_toolBar, BorderLayout.PAGE_START);
-
+		
+		_maxForceButton = new JButton();
+		_maxForceButton.setToolTipText("Total force per body");
+		_maxForceButton.setIcon(new ImageIcon("?")); // TODO from where do we get the image.
+		_maxForceButton.addActionListener((e) -> {
+			
+		});
+		_toolBar.add(_maxForceButton);
+		
 		_openButton = new JButton();
 		_openButton.setToolTipText("Load an input file into the simulator");
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
