@@ -80,7 +80,20 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		});
 		_toolBar.add(_selectButton);
 		
-		// Time TODO
+		// Total force per body.
+		_totalForceButon = new JButton();
+		_totalForceButon.setToolTipText("Total force per body");
+		_totalForceButon.setIcon(new ImageIcon("Resources/icons/physics.png"));
+		_totalForceButon.addActionListener((e) -> {
+			if(_totalForceDialog == null) {
+				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+				_totalForceDialog = new TotalTimeDialog(parent, _ctrl); // TODO
+			}
+			_totalForceDialog.open();
+					
+		});
+		_toolBar.add(_totalForceButon);
+				
 
 		_viewerButton = new JButton();
 		_viewerButton.setToolTipText("Open viewer window");
@@ -146,23 +159,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_toolBar.add(_quitButton);
 
 		_fc = new JFileChooser();
-		
-		// Total force per body.
-		_totalForceButon = new JButton();
-		_totalForceButon.setToolTipText("Total force per body");
-		_totalForceButon.setIcon(new ImageIcon("Resources/icons/physics.png"));
-		_totalForceButon.addActionListener((e) -> {
-			if(_totalForceDialog == null) {
-				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
-				_totalForceDialog = new TotalTimeDialog(parent, _ctrl);// TODO add arguments.
-			}
-			//_totalTimeDialog.open();
-			
-		});
-		_toolBar.add(_totalForceDialog);
-		
-		
-		
 		
 		/*
 		_selectButton = new JButton();

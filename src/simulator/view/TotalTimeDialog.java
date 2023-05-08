@@ -27,14 +27,18 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
+@SuppressWarnings("serial")
 public class TotalTimeDialog extends JDialog implements SimulatorObserver{
-	String[] _header = { "Id", "Total force" };
+	String[] _headers = { "Id", "Total force" };
 	List<Body> _bodies;
+	private DefaultTableModel _dataTableModel;
 	private Controller _ctrl;
+	private int _status;
+	private ForcesTableModel forcesTableModel;
 	
-	TotalTimeDialog(Frame parent, Controller ctrl) {
+	TotalTimeDialog(Frame parent, Controller ctrl, ForcesTableModel forces) {
 		super(parent, true);
-		_ctrl = ctrl;
+		this._ctrl = ctrl;
 		initGUI();
 		//fillInTable(_selectedLawsIndex);
 		ctrl.addObserver(this);
@@ -45,6 +49,46 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
+		
+		JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		mainPanel.add(labelPanel);
+		
+		JPanel eventsPanel = new JPanel(new BorderLayout());
+		mainPanel.add(eventsPanel, BorderLayout.CENTER);
+		
+		_dataTableModel = new DefaultTableModel() {
+			/*
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return (column == 0);// Make column 1 not editable
+			}
+			*/
+		};
+		_dataTableModel.setColumnIdentifiers(_headers);
+		JTable _dataTable = new JTable(_dataTableModel);
+		eventsPanel.add(_dataTable);
+		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+		TableColumn tableColumn = _dataTable.getColumnModel().getColumn(1);
+		tableColumn.setMinWidth(300);
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
+		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
+
+		JButton okButton = new JButton("OK");
+		okButton.addActionListener((e) -> {
+			try {
+				// TODO que pasa si pulso ok????
+			} catch (Exception exc) {
+				Utils.showErrorMsg("Problem encountered with new force laws, enter a valid value");
+
+			}
+			//_status = 1;
+			//ForceLawsDialog.this.setVisible(false);
+		});
+		buttonsPanel.add(okButton);
+		
 		/*
 		_forceLawsInfo = _ctrl.getForceLawsInfo(); // Get the list of available force laws with their info
 
@@ -72,6 +116,7 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 		eventsPanel.add(_dataTable);
 		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+				
 		TableColumn tableColumn = _dataTable.getColumnModel().getColumn(2);
 		tableColumn.setMinWidth(300);
 		JPanel comboBoxPanel = new JPanel();
@@ -122,6 +167,19 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 		setResizable(false);
 		setVisible(false);
 		*/
+	}
+	
+	public int open() {
+		
+		/*
+		 if (_groupsModel.getSize() == 0)
+		 	return _status;
+		 	*/
+
+		setLocationRelativeTo(getParent()); // Open the dialog in the middle of the parent window
+		pack();
+		setVisible(true);
+		return _status;
 	}
 
 	@Override
