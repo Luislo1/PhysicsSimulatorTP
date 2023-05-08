@@ -162,8 +162,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_selectButton.addActionListener((e) -> {
 			if(_totalTimeDialog == null) {
 				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
-				_totalTimeDialog = new TotalTimeDialog();// TODO add arguments.
-				_flDialog = new ForceLawsDialog(parent, _ctrl);
+				_totalTimeDialog = new TotalTimeDialog(parent, _ctrl);// TODO add arguments.
 			}
 			_totalTimeDialog.open();
 			
