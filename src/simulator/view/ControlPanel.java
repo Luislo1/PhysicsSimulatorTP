@@ -164,7 +164,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
 				_totalTimeDialog = new TotalTimeDialog(parent, _ctrl);// TODO add arguments.
 			}
-			_totalTimeDialog.open();
+			//_totalTimeDialog.open();
 			
 		});
 		_toolBar.add(_totalTimeDialog);

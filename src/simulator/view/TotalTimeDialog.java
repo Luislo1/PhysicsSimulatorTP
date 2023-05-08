@@ -36,7 +36,7 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 		super(parent, true);
 		_ctrl = ctrl;
 		initGUI();
-		fillInTable(_selectedLawsIndex);
+		//fillInTable(_selectedLawsIndex);
 		ctrl.addObserver(this);
 	}
 	
@@ -45,7 +45,7 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
-
+		/*
 		_forceLawsInfo = _ctrl.getForceLawsInfo(); // Get the list of available force laws with their info
 
 		JLabel labelIntro = new JLabel(
@@ -102,11 +102,6 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener((e) -> {
-			_status = 0;
-			setVisible(false);
-		});
 		buttonsPanel.add(cancelButton);
 
 		JButton okButton = new JButton("OK");
@@ -126,6 +121,7 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 		pack();
 		setResizable(false);
 		setVisible(false);
+		*/
 	}
 
 	@Override

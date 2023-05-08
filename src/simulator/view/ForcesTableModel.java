@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
+import simulator.misc.Vector2D;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
@@ -15,6 +16,7 @@ import simulator.model.SimulatorObserver;
 public class ForcesTableModel extends AbstractTableModel implements SimulatorObserver {
 	String[] _header = {"Body" ,"Total Forces" };
 	List<Body> _bodies;
+	Map<String, Vector2D> bodiesTotalForces; // String = id+gid.
 
 	ForcesTableModel(Controller ctrl) {
 		_bodies = new ArrayList<>();
