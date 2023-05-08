@@ -35,16 +35,16 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JFileChooser _fc;
 	private boolean _stopped = true;
 	private JButton _quitButton;
-	private JButton _maxForceButton;
 	private JButton _openButton;
 	private JButton _selectButton;
+	private JButton _totalForceButon;
 	private JButton _viewerButton;
 	private JButton _runButton;
 	private JButton _stopButton;
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
-	private TotalTimeDialog _totalTimeDialog;
+	private TotalTimeDialog _totalForceDialog;
 	
 
 	ControlPanel(Controller ctrl) {
@@ -57,14 +57,6 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		setLayout(new BorderLayout());
 		_toolBar = new JToolBar();
 		add(_toolBar, BorderLayout.PAGE_START);
-		
-		_maxForceButton = new JButton();
-		_maxForceButton.setToolTipText("Total force per body");
-		_maxForceButton.setIcon(new ImageIcon("?")); // TODO from where do we get the image.
-		_maxForceButton.addActionListener((e) -> {
-			
-		});
-		_toolBar.add(_maxForceButton);
 		
 		_openButton = new JButton();
 		_openButton.setToolTipText("Load an input file into the simulator");
@@ -156,18 +148,18 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_fc = new JFileChooser();
 		
 		// Total force per body.
-		_selectButton = new JButton();
-		_selectButton.setToolTipText("Total force per body");
-		//TODO ¿Qué foto ponemos?
-		_selectButton.addActionListener((e) -> {
-			if(_totalTimeDialog == null) {
+		_totalForceButon = new JButton();
+		_totalForceButon.setToolTipText("Total force per body");
+		_totalForceButon.setIcon(new ImageIcon("Resources/icons/physics.png"));
+		_totalForceButon.addActionListener((e) -> {
+			if(_totalForceDialog == null) {
 				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
-				_totalTimeDialog = new TotalTimeDialog(parent, _ctrl);// TODO add arguments.
+				_totalForceDialog = new TotalTimeDialog(parent, _ctrl);// TODO add arguments.
 			}
 			//_totalTimeDialog.open();
 			
 		});
-		_toolBar.add(_totalTimeDialog);
+		_toolBar.add(_totalForceDialog);
 		
 		
 		
