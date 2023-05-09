@@ -34,14 +34,12 @@ public class TotalForceDialog extends JDialog implements SimulatorObserver{
 	private DefaultTableModel _dataTableModel;
 	private Controller _ctrl;
 	private int _status;
-	private ForcesTableModel forcesTableModel;
+	private ForcesTableModel _forcesTableModel;
 	
 	TotalForceDialog(Frame parent, ForcesTableModel forces) {
 		super(parent, true);
-		this._ctrl = ctrl;
 		initGUI();
-		//fillInTable(_selectedLawsIndex);
-		ctrl.addObserver(this);
+		this._forcesTableModel = forces;
 	}
 	
 	private void initGUI() {
@@ -88,6 +86,11 @@ public class TotalForceDialog extends JDialog implements SimulatorObserver{
 			//ForceLawsDialog.this.setVisible(false);
 		});
 		buttonsPanel.add(okButton);
+		
+		setPreferredSize(new Dimension(700, 400));
+		pack();
+		setResizable(false);
+		setVisible(false);
 		
 		/*
 		_forceLawsInfo = _ctrl.getForceLawsInfo(); // Get the list of available force laws with their info
