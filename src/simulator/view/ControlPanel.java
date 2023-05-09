@@ -87,7 +87,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_totalForceButon.addActionListener((e) -> {
 			if(_totalForceDialog == null) {
 				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
-				_totalForceDialog = new TotalTimeDialog(parent, _ctrl); // TODO
+				_totalForceDialog = new TotalTimeDialog(parent, _ctrl, new ForcesTableModel(_ctrl)); // TODO
 			}
 			_totalForceDialog.open();
 					
