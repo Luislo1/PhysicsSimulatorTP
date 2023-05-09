@@ -28,7 +28,7 @@ import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
 @SuppressWarnings("serial")
-public class TotalTimeDialog extends JDialog implements SimulatorObserver{
+public class TotalForceDialog extends JDialog implements SimulatorObserver{
 	String[] _headers = { "Id", "Total force" };
 	List<Body> _bodies;
 	private DefaultTableModel _dataTableModel;
@@ -36,7 +36,7 @@ public class TotalTimeDialog extends JDialog implements SimulatorObserver{
 	private int _status;
 	private ForcesTableModel forcesTableModel;
 	
-	TotalTimeDialog(Frame parent, Controller ctrl, ForcesTableModel forces) {
+	TotalForceDialog(Frame parent, ForcesTableModel forces) {
 		super(parent, true);
 		this._ctrl = ctrl;
 		initGUI();
