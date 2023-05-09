@@ -45,6 +45,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
 	private TotalTimeDialog _totalForceDialog;
+	private ForcesTableModel _forcesTableModel;
 	
 
 	ControlPanel(Controller ctrl) {
