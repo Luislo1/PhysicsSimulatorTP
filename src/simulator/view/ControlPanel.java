@@ -45,7 +45,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
 	private TotalForceDialog _totalForceDialog;
-	private ForcesTableModel _forcesTableModel;
+	private TotalForcesTableModel _forcesTableModel;
 	
 
 	ControlPanel(Controller ctrl) {
@@ -90,7 +90,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
 				_totalForceDialog = new TotalForceDialog(parent, _forcesTableModel); // TODO
 			}
-			_totalForceDialog.open();
+			//_totalForceDialog.open();
 					
 		});
 		_toolBar.add(_totalForceButon);

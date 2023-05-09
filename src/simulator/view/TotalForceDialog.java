@@ -29,14 +29,9 @@ import simulator.model.SimulatorObserver;
 
 @SuppressWarnings("serial")
 public class TotalForceDialog extends JDialog {
-	String[] _headers = { "Id", "Total force" };
-	List<Body> _bodies;
-	private DefaultTableModel _dataTableModel;
-	private Controller _ctrl;
-	private int _status;
-	private ForcesTableModel _forcesTableModel;
+	private TotalForcesTableModel _forcesTableModel;
 	
-	TotalForceDialog(Frame parent, ForcesTableModel forces) {
+	TotalForceDialog(Frame parent, TotalForcesTableModel forces) {
 		super(parent, true);
 		initGUI();
 		this._forcesTableModel = forces;
@@ -73,19 +68,4 @@ public class TotalForceDialog extends JDialog {
 		setResizable(false);
 		setVisible(true);
 	}
-	
-	public int open() {
-		
-		/*
-		 if (_groupsModel.getSize() == 0)
-		 	return _status;
-		 	*/
-
-		setLocationRelativeTo(getParent()); // Open the dialog in the middle of the parent window
-		pack();
-		setVisible(true);
-		return _status;
-	}
-
-
 }
