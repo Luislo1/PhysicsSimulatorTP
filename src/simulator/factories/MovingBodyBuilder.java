@@ -40,6 +40,7 @@ public class MovingBodyBuilder extends Builder<Body> {
 		if (p.length() != 2)
 			throw new IllegalArgumentException("Invalid amount of vector position parameters");
 		Vector2D p1 = new Vector2D(p.getDouble(0), p.getDouble(1));
+		
 		if (data.has("v")) {
 			v = data.getJSONArray("v");
 		}

@@ -26,6 +26,7 @@ import simulator.factories.MovingTowardsFixedPointBuilder;
 import simulator.factories.NewtonUniversalGravitationBuilder;
 import simulator.factories.NoForceBuilder;
 import simulator.factories.StationaryBodyBuilder;
+import simulator.model.BatchModeNOption;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
 import simulator.model.PhysicsSimulator;
@@ -49,6 +50,8 @@ public class Main {
 	private static String _outFile = null;
 	private static JSONObject _forceLawsInfo = null;
 	private static String _mode = null;
+	private static boolean isN = false;
+	private static BatchModeNOption b;
 
 	// factories
 	private static Factory<Body> _bodyFactory;
@@ -86,6 +89,7 @@ public class Main {
 			parseForceLawsOption(line);
 			parseOutFileOption(line);
 			parseStepsOption(line);
+			parseNOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -140,6 +144,8 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg().desc(
 				"An integer representing the number of simulation steps. Default value: " + _stepsDefaultValue + ".")
 				.build());
+		// number of north
+		cmdLineOptions.addOption(Option.builder("n").build());
 
 		return cmdLineOptions;
 	}
@@ -205,6 +211,10 @@ public class Main {
 			throw new ParseException("Invalid steps value: " + s);
 		}
 	}
+	private static void parseNOption(CommandLine line) {
+		if (line.hasOption("n")) 
+			isN = true;
+	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {
 
@@ -266,6 +276,9 @@ public class Main {
 		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
 		controller.loadData(in);
 		controller.run(_steps, out);
+		if(isN) {
+			b.PrintNumberOfNorth();
+		}
 	}
 
 	private static void startGUIMode() throws Exception {
