@@ -39,19 +39,23 @@ public class MainWindow extends JFrame {
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 
 		JPanel groupsTable = new InfoTable("Groups", new GroupsTableModel(_ctrl));
-		groupsTable.setPreferredSize(new Dimension(500, 250));
+		groupsTable.setPreferredSize(new Dimension(500, 150));
 		contentPanel.add(groupsTable);
 
 		JPanel bodiesTable = new InfoTable("Bodies", new BodiesTableModel(_ctrl));
-		bodiesTable.setPreferredSize(new Dimension(500, 250));
+		bodiesTable.setPreferredSize(new Dimension(500, 200));
 		contentPanel.add(bodiesTable);
 		
+		JPanel minMaxDistancesTable = new InfoTable("Distances", new MaxMinDistanceTableModel(_ctrl));
+		bodiesTable.setPreferredSize(new Dimension(500, 200));
+		contentPanel.add(minMaxDistancesTable);
+		
 		MassLosingPanel massLosingTextArea = new MassLosingPanel(_ctrl);
-		massLosingTextArea.setPreferredSize(new Dimension(500, 250));
+		massLosingTextArea.setPreferredSize(new Dimension(500, 200));
 		contentPanel.add(massLosingTextArea);
 		
 		JPanel accDistanceTable = new InfoDistanceTable("Accumulated Distances", new DistancesTableModel(_ctrl));
-		accDistanceTable.setPreferredSize(new Dimension(500, 250));
+		accDistanceTable.setPreferredSize(new Dimension(500, 200));
 		contentPanel.add(accDistanceTable);
 		
 

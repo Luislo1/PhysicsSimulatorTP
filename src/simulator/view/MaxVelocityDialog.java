@@ -44,7 +44,7 @@ public class MaxVelocityDialog extends JDialog {
 	}
 
 	private void initGUI() {
-		setTitle("Max Vel");
+		setTitle("Maximum Velocity");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
@@ -64,22 +64,8 @@ public class MaxVelocityDialog extends JDialog {
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener((e) -> {
-			_status = 0;
-			setVisible(false);
-		});
-		buttonsPanel.add(cancelButton);
-
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener((e) -> {
-			try {
-
-			} catch (Exception exc) {
-				Utils.showErrorMsg("Problem encountered with new force laws, enter a valid value");
-
-			}
-			_status = 1;
 			MaxVelocityDialog.this.setVisible(false);
 		});
 		buttonsPanel.add(okButton);

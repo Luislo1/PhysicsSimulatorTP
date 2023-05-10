@@ -39,7 +39,7 @@ public class TotalForceDialog extends JDialog {
 	}
 
 	private void initGUI() {
-		setTitle("Force Laws Selection");
+		setTitle("Total Force per body");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
