@@ -43,6 +43,9 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
+	private JButton _maxSpeedButton;
+	private MaxSpeedDialog _maxSpeedDialog;
+	private MaxSpeedTableModel _maxSpeedTableModel;
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
@@ -76,6 +79,23 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 			_flDialog.open();
 		});
 		_toolBar.add(_selectButton);
+		
+		// New Button 
+		/* Usar este input en el arguments de la run configuration
+		   -i resources/examples/input/ex1.json -o resources/examples/expected_output/out.1.json -s 1000 -dt 1000 -fl nlug -m gui
+		 */
+		
+		_maxSpeedButton = new JButton();
+		_maxSpeedButton.setToolTipText("Max Speed Statistics");
+		_maxSpeedButton.setIcon(new ImageIcon("Resources/icons/physics.png")); // TODO poner su stats.png
+		_maxSpeedButton.addActionListener((e) -> { // Open the force laws dialog. Creates a new one only if none has been
+													// created yet
+			if (_maxSpeedDialog == null) {
+				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+				_maxSpeedDialog = new MaxSpeedDialog(parent, _maxSpeedTableModel);
+			}
+		});
+		_toolBar.add(_maxSpeedButton);
 
 		_viewerButton = new JButton();
 		_viewerButton.setToolTipText("Open viewer window");
