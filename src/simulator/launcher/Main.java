@@ -21,6 +21,7 @@ import simulator.control.Controller;
 import simulator.factories.Builder;
 import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
+import simulator.factories.FuzzyBodyBuilder;
 import simulator.factories.MovingBodyBuilder;
 import simulator.factories.MovingTowardsFixedPointBuilder;
 import simulator.factories.NewtonUniversalGravitationBuilder;
@@ -273,7 +274,7 @@ public class Main {
 		OutputStream out = System.out;
 		if (_outFile != null)
 			out = new FileOutputStream(_outFile);
-
+		b = new BatchModeNOption();
 		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
 		controller.loadData(in);
 		controller.run(_steps, out);

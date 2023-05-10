@@ -10,12 +10,7 @@ import simulator.model.FuzzyBody;
 public class FuzzyBodyBuilder extends Builder<Body> {
 
 	public FuzzyBodyBuilder() {
-		super(typeTag, desc); // TODO poner el nombre que dio en el examen.
-	}
-
-	@Override
-	public void fillInData(JSONObject data)
-		
+		super("f_body", "Fuzzy Bod"); // TODO poner el nombre que dio en el examen en vez de f_body.
 	}
 
 	@Override
@@ -70,7 +65,13 @@ public class FuzzyBodyBuilder extends Builder<Body> {
 		if (data.has("n")) {
 			n = data.getDouble("n");
 		}
-		return new FuzzyBody(id, gid, p, v, m, pr, d, n); // TODO fix.
+		return new FuzzyBody(id, gid, p1, v1, m, pr, d, n); 
+	}
+
+	@Override
+	public void fillInData(JSONObject data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
