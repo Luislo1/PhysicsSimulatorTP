@@ -274,8 +274,9 @@ public class Main {
 		OutputStream out = System.out;
 		if (_outFile != null)
 			out = new FileOutputStream(_outFile);
-		b = new BatchModeNOption();
+	
 		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
+		b = new BatchModeNOption(controller);
 		controller.loadData(in);
 		controller.run(_steps, out);
 		if(isN) {

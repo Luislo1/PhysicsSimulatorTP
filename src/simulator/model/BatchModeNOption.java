@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.lang.ModuleLayer.Controller;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,9 +8,10 @@ public class BatchModeNOption implements SimulatorObserver{
 	Map<Body, Integer> numberOfNorth;
 	Map<Body, Boolean> needsToChange;
 	
-	public BatchModeNOption() {
+	public BatchModeNOption(Controller ctrl) {
 		numberOfNorth = new HashMap<Body, Integer>();
 		needsToChange = new HashMap<Body, Boolean>();
+		ctrl.ad
 	}
 	
 	
