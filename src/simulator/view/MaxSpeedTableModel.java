@@ -1,14 +1,21 @@
 package simulator.view;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
+import simulator.control.Controller;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
 public class MaxSpeedTableModel extends AbstractTableModel implements SimulatorObserver{
+	String[] _header = { "Time", "Id", "gId", "Max Speed" };
+	
+	MaxSpeedTableModel(Controller ctrl) {
+		ctrl.addObserver(this);
+	}
 
 	@Override
 	public int getRowCount() {
@@ -21,6 +28,11 @@ public class MaxSpeedTableModel extends AbstractTableModel implements SimulatorO
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public String getColumnName(int col) {
+		return _header[col];
+	}
+
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
