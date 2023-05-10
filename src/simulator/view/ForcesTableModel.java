@@ -13,13 +13,13 @@ import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
 
-public class TotalForcesTableModel extends AbstractTableModel implements SimulatorObserver {
+public class ForcesTableModel extends AbstractTableModel implements SimulatorObserver {
 
 	Map<String, Vector2D> _totalForce;
 	String[] _header = { "Body", "Total Forces" };
 	List<Body> _bodies;
 
-	public TotalForcesTableModel(Controller ctrl) {
+	public ForcesTableModel(Controller ctrl) {
 		_totalForce = new HashMap<>();
 		_bodies = new ArrayList<>();
 		ctrl.addObserver(this);

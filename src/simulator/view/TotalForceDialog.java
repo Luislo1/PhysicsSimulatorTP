@@ -29,9 +29,9 @@ import simulator.model.SimulatorObserver;
 
 @SuppressWarnings("serial")
 public class TotalForceDialog extends JDialog {
-	private TotalForcesTableModel _forcesTableModel;
+	private ForcesTableModel _forcesTableModel;
 	
-	TotalForceDialog(Frame parent, TotalForcesTableModel forces) {
+	TotalForceDialog(Frame parent, ForcesTableModel forces) {
 		super(parent, true);
 		initGUI();
 		this._forcesTableModel = forces;
