@@ -9,7 +9,7 @@ import simulator.model.FuzzyBody;
 
 public class FuzzyBodyBuilder extends Builder<Body> {
 
-	public FuzzyBodyBuilder(String typeTag, String desc) {
+	public FuzzyBodyBuilder() {
 		super(typeTag, desc); // TODO poner el nombre que dio en el examen.
 	}
 
@@ -70,7 +70,7 @@ public class FuzzyBodyBuilder extends Builder<Body> {
 		if (data.has("n")) {
 			n = data.getDouble("n");
 		}
-		return new FuzzyBody(id, gid, p, v, m, pr, d, n);
+		return new FuzzyBody(id, gid, p, v, m, pr, d, n); // TODO fix.
 	}
 
 }
