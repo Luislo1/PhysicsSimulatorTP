@@ -21,6 +21,7 @@ import simulator.control.Controller;
 import simulator.factories.Builder;
 import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
+import simulator.factories.FuzzyBodyBuilder;
 import simulator.factories.MovingBodyBuilder;
 import simulator.factories.MovingTowardsFixedPointBuilder;
 import simulator.factories.NewtonUniversalGravitationBuilder;
@@ -28,6 +29,7 @@ import simulator.factories.NoForceBuilder;
 import simulator.factories.StationaryBodyBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
+import simulator.model.NorthTurns;
 import simulator.model.PhysicsSimulator;
 import simulator.view.MainWindow;
 
@@ -49,6 +51,7 @@ public class Main {
 	private static String _outFile = null;
 	private static JSONObject _forceLawsInfo = null;
 	private static String _mode = null;
+	private static boolean north = false;
 
 	// factories
 	private static Factory<Body> _bodyFactory;
@@ -60,6 +63,7 @@ public class Main {
 		ArrayList<Builder<Body>> bodyBuilders = new ArrayList<>();
 		bodyBuilders.add(new MovingBodyBuilder());
 		bodyBuilders.add(new StationaryBodyBuilder());
+		bodyBuilders.add(new FuzzyBodyBuilder());
 		_bodyFactory = new BuilderBasedFactory<Body>(bodyBuilders);
 		ArrayList<Builder<ForceLaws>> forceLawsBuilders = new ArrayList<>();
 		forceLawsBuilders.add(new NewtonUniversalGravitationBuilder());
@@ -86,6 +90,7 @@ public class Main {
 			parseForceLawsOption(line);
 			parseOutFileOption(line);
 			parseStepsOption(line);
+			parseNorthOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -140,6 +145,9 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg().desc(
 				"An integer representing the number of simulation steps. Default value: " + _stepsDefaultValue + ".")
 				.build());
+		// north
+		cmdLineOptions.addOption(Option.builder("n").longOpt("north")
+				.desc("Prints the amount of times each body changed direction").build());
 
 		return cmdLineOptions;
 	}
@@ -178,7 +186,7 @@ public class Main {
 
 	private static void parseModeOption(CommandLine line) throws ParseException {
 		_mode = line.getOptionValue("m", _modeDefaultValue);
-		if(!(_mode.equals("gui") || _mode.equals("batch")))
+		if (!(_mode.equals("gui") || _mode.equals("batch")))
 			throw new ParseException("Invalid mode " + _mode);
 	}
 
@@ -203,6 +211,12 @@ public class Main {
 			assert (_steps > 0);
 		} catch (Exception e) {
 			throw new ParseException("Invalid steps value: " + s);
+		}
+	}
+
+	private static void parseNorthOption(CommandLine line) {
+		if (line.hasOption("n")) {
+			north = true;
 		}
 	}
 
@@ -264,14 +278,20 @@ public class Main {
 			out = new FileOutputStream(_outFile);
 
 		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
+		
+		NorthTurns northTurns = new NorthTurns(controller);
+
 		controller.loadData(in);
 		controller.run(_steps, out);
+		if (north) {
+			northTurns.printStatistics();
+		}
 	}
 
 	private static void startGUIMode() throws Exception {
 		InputStream in = null;
 
-		PhysicsSimulator simulator = new PhysicsSimulator(_forceLawsFactory.createInstance(_forceLawsInfo) ,_dtime);
+		PhysicsSimulator simulator = new PhysicsSimulator(_forceLawsFactory.createInstance(_forceLawsInfo), _dtime);
 		if (_inFile != null)
 			in = new FileInputStream(_inFile);
 

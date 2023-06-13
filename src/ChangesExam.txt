@@ -1,0 +1,42 @@
+LUIS LÓPEZ SÁEZ
+
+Question 1:
+
+Created:
+	FuzzyBody.java in simulator.model inheriting MovingBody
+	FuzzyBodyBuilder.java in simulator.factories
+Modified:
+	The initFactories() method in Main.java
+
+Question 2:
+
+Created:
+	NorthTurns.java in simulator.model as a SimulatorObserver
+This class keeps two maps: one to keep track of the number of north turns of each body and another to know whether the body
+can turn north (with a boolean).
+
+Modified:
+	The Main.java class: Added new option "n" to the buildOptions() method, added a parsing method and added it to the 
+parseArgs method. Added a boolean variable set to true if -n is selected. Created a NorthTurns object before the controller.run
+in the startBatchMode() method and called northTurns.printStatistics() after the run() method ends.
+
+Question 3
+
+Created:
+	MaxSpeedTableModel.java in simulator.view
+	MaxSpeedDialog.java in simulator.view
+
+The table model contains three lists: One for bodies, one for time, and one for max speed. In the onAdvance() method the max
+speed is calculated and the body, time and max speed are added to the lists. If the list limit has been reached (int _steps)
+then the first element of every list is removed. Additionally there is a reset(int n) method which resets the lists and sets
+the in _steps to the value of n.
+
+The dialog contains a panel with the table, the buttons, and the spinner. The button calls the reset(int n) method of the 
+model using the value in the spinner.
+
+NOTE: There's an unhandled exception if you run the simulator with no file opened and open the new dialog. I have not fixed
+it because you shouldn't run the simulator with no file open.
+
+Modified:
+	The ControlPanel.java class to add the new _maxSpeedButton. Before this the new model is created, and each time the
+button is pressed a new MaxSpeedDialog is created with the model. There is a new constant int for the default N steps.

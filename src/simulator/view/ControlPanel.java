@@ -40,9 +40,12 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 	private JButton _viewerButton;
 	private JButton _runButton;
 	private JButton _stopButton;
+	private JButton _maxSpeedButton;
 	private JSpinner _stepSpinner;
 	private JTextField _timeField;
 	private ForceLawsDialog _flDialog;
+	private MaxSpeedTableModel _maxSpeedTableModel;
+	private static final int DEFAULT_STEPS_MAXSPEED = 100;
 
 	ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
@@ -55,6 +58,18 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_toolBar = new JToolBar();
 		add(_toolBar, BorderLayout.PAGE_START);
 
+		
+		_maxSpeedTableModel = new MaxSpeedTableModel(_ctrl, DEFAULT_STEPS_MAXSPEED);
+		
+		_maxSpeedButton = new JButton();
+		_maxSpeedButton.setToolTipText("Max Speed");
+		_maxSpeedButton.setIcon(new ImageIcon("Resources/icons/stats.png"));
+		_maxSpeedButton.addActionListener((e) -> { 
+			Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+			new MaxSpeedDialog(parent, _maxSpeedTableModel);
+		});
+		_toolBar.add(_maxSpeedButton);
+		
 		_openButton = new JButton();
 		_openButton.setToolTipText("Load an input file into the simulator");
 		_openButton.setIcon(new ImageIcon("Resources/icons/open.png"));
@@ -140,7 +155,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_quitButton.addActionListener((e) -> Utils.quit(this));
 		_toolBar.add(_quitButton);
 
-		_fc = new JFileChooser();
+		_fc = new JFileChooser("U:\\hlocal\\TP2Exam\\resources\\examples\\input");
 
 	}
 
@@ -186,6 +201,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_viewerButton.setEnabled(activate);
 		_runButton.setEnabled(activate);
 		_stopButton.setEnabled(activate);
+		_maxSpeedButton.setEnabled(activate);
 	}
 
 	@Override

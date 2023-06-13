@@ -1,0 +1,52 @@
+*** This file, and its content, is for personal use only, you are not
+*** allowed to share it with anyone, including your classmates.
+
+*** Este archivo, y su contenido, es solo para uso personal, no estÃ¡
+*** permitido compartirlo con nadie, incluso tus compaÃ±eros de clase.
+
+PUESTO: PTO0702
+NAME/NOMBRE: LUIS ALEJANDRO LÃ“PEZ SÃEZ
+GRADE/NOTA: 10
+GROUP/GRUPO: I
+
+
+GENERAL
+=======
+
+The only thing I didn't like is the use of ArrayList in E3, I don't penalise it in your case because you've been the best in classes.
+
+
+
+E1 - FuzzyBody:
+===============
+
+- should check fro validity of values in the constructor, not the builder
+
+
+
+E2 - Turn North:
+================
+
+- no need to construct the object of the option is not provided in the command line arguments
+
+		NorthTurns northTurns = new NorthTurns(controller);
+
+
+- I think you're doing the counting the other way around, but this not important
+
+- You have some duplication of code
+
+
+
+E3 - Max Speed:
+===============
+
+- instead of 3 lists you could create an auxiliary class that encapsulates all information
+
+	private List<Body> _bodies;
+	private List<Double> _time;
+	private List<Double> _maxSpeedList;
+
+- in onAdvance, better take care of the case in which there are no bodies
+
+- Using ArrayList in not efficient because you are removing the first element 
