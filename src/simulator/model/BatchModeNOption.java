@@ -6,12 +6,12 @@ import java.util.Map;
 import simulator.control.Controller;
 
 public class BatchModeNOption implements SimulatorObserver{
-	Map<Body, Integer> numberOfNorth;
-	Map<Body, Boolean> needsToChange;
-	
 	/* Usar este input en el arguments de la run configuration para probar la nueva opción -n del batch mode.
 	   -i resources/examples/input/ex1.json -o resources/examples/expected_output/out.1.json -s 1000 -dt 1000 -fl nlug -m batch -n
 	*/
+	
+	Map<Body, Integer> numberOfNorth;
+	Map<Body, Boolean> needsToChange;
 	
 	public BatchModeNOption(Controller ctrl) {
 		numberOfNorth = new HashMap<Body, Integer>();
