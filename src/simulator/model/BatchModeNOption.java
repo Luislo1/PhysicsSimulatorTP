@@ -21,14 +21,14 @@ public class BatchModeNOption implements SimulatorObserver{
 	
 	
 	@Override
-	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
+	public void onAdvance(Map<String, BodiesGroup> groups, double time) { // Cuando se avanza un step.
 		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
 			BodiesGroup value = entry.getValue();
 			for(Body b: value) {
 				String id = b.getId() + ":" + b.getgId();
 				Double velY = b.getVelocity().getY();
 				
-				if (velY > 0 && needsToChange.get(id)) {
+				if (velY > 0 && needsToChange.get(id)) { // Miro si en el step anterior fue negativa la coordenada Y de la velocity y si en este es positiva.
 					needsToChange.put(id, false);
 					int newAmount = numberOfNorth.get(id);
 					newAmount++;
@@ -42,13 +42,13 @@ public class BatchModeNOption implements SimulatorObserver{
 	}
 
 	@Override
-	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) { // Si reseteo el simulator.
+	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) { // Si reseteo el simulator debo vaciar las estructuras con un clear.
 		numberOfNorth.clear();
 	}
 
 	@Override
-	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) { // Si añado ??????
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) { // Cuando cargas la información del map groups que coge el simulador
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {              // en los HashMaps de esta clase para tener acceso a ella en el onAdvance()
 			BodiesGroup value = entry.getValue();
 			for (Body b : value) {
 				String id = b.getId() + ":" + b.getgId();
@@ -63,14 +63,14 @@ public class BatchModeNOption implements SimulatorObserver{
 	}
 
 	@Override
-	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) { // ¿Porque no relleno esté?
-		// TODO Auto-generated method stub
+	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) { // Cuando se añade un grupo al simulador, lo añado en los HashMaps de esta clase para 
+		                                                                       // clase para tener acceso a el en el onAdvance().
 		
 	}
 
 	@Override
-	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) { // Si añado un body.
-		String id = b.getId() + ":" + b.getgId();
+	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) { // Cuando se añade un body al simulador, lo añado en los HashMaps de esta clase para 
+		String id = b.getId() + ":" + b.getgId();                      // tener acceso a el en el onAdvance().
 		boolean pointsNorth = false;
 		numberOfNorth.put(id, 0);
 		if (b.getVelocity().getY() < 0) {

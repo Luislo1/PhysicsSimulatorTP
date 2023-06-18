@@ -51,8 +51,7 @@ public class Main {
 	private static String _outFile = null;
 	private static JSONObject _forceLawsInfo = null;
 	private static String _mode = null;
-	private static boolean isN = false;
-	private static BatchModeNOption b;
+	private static boolean isN = false; // TODO ver cambio
 
 	// factories
 	private static Factory<Body> _bodyFactory;
@@ -91,7 +90,7 @@ public class Main {
 			parseForceLawsOption(line);
 			parseOutFileOption(line);
 			parseStepsOption(line);
-			parseNOption(line);
+			parseNOption(line); // TODO ver cambio
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -146,8 +145,9 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("s").longOpt("steps").hasArg().desc(
 				"An integer representing the number of simulation steps. Default value: " + _stepsDefaultValue + ".")
 				.build());
-		// number of north
-		cmdLineOptions.addOption(Option.builder("n").build());
+		// north
+		cmdLineOptions.addOption(Option.builder("n").longOpt("north")
+				.desc("Prints the amount of times each body changed direction").build()); // TODO ver cambio.
 
 		return cmdLineOptions;
 	}
@@ -213,7 +213,7 @@ public class Main {
 			throw new ParseException("Invalid steps value: " + s);
 		}
 	}
-	private static void parseNOption(CommandLine line) {
+	private static void parseNOption(CommandLine line) { // TODO ver cambio.
 		if (line.hasOption("n")) 
 			isN = true;
 	}
@@ -276,11 +276,14 @@ public class Main {
 			out = new FileOutputStream(_outFile);
 	
 		Controller controller = new Controller(simulator, _forceLawsFactory, _bodyFactory);
-		b = new BatchModeNOption(controller);
+		
+		BatchModeNOption batchModeNOption = new BatchModeNOption(controller); // TODO ver cambio.
+		
 		controller.loadData(in);
 		controller.run(_steps, out);
-		if(isN) {
-			b.PrintNumberOfNorth();
+		
+		if(isN) { // TODO ver cambio.
+			batchModeNOption.PrintNumberOfNorth();
 		}
 	}
 
