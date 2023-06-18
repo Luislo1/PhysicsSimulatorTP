@@ -63,13 +63,13 @@ public class BatchModeNOption implements SimulatorObserver{
 	}
 
 	@Override
-	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
+	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) { // ¿Porque no relleno esté?
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
+	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) { // Si añado un body.
 		String id = b.getId() + ":" + b.getgId();
 		boolean pointsNorth = false;
 		numberOfNorth.put(id, 0);
