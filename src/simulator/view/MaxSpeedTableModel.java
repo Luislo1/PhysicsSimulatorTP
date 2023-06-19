@@ -13,7 +13,7 @@ import simulator.model.SimulatorObserver;
 public class MaxSpeedTableModel extends AbstractTableModel implements SimulatorObserver{
 	String[] _header = { "Time", "Id", "gId", "Max Speed" };
 	
-	MaxSpeedTableModel(Controller ctrl) {
+	MaxSpeedTableModel(Controller ctrl, int steps) {
 		ctrl.addObserver(this);
 	}
 
