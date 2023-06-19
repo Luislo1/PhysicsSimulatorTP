@@ -27,7 +27,7 @@ public class MaxSpeedDialog extends JDialog{
 	}
 	
 	private void initGUI() {
-		setTitle("Total Force per Body");
+		setTitle("Max Speed Statistics");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
@@ -35,9 +35,9 @@ public class MaxSpeedDialog extends JDialog{
 		JPanel eventsPanel = new JPanel(new BorderLayout());
 		mainPanel.add(eventsPanel, BorderLayout.CENTER);
 		
-		JTable _maxSpeedTable = new JTable(maxSpeedTable);
-		eventsPanel.add(_maxSpeedTable);
-		eventsPanel.add(new JScrollPane(_maxSpeedTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JTable _dataTable = new JTable(maxSpeedTable);
+		eventsPanel.add(_dataTable);
+		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 		JPanel comboBoxPanel = new JPanel();
 		mainPanel.add(comboBoxPanel, BorderLayout.PAGE_END);
@@ -46,18 +46,21 @@ public class MaxSpeedDialog extends JDialog{
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 		
+		//Spinner
 		SpinnerModel model = new SpinnerNumberModel(100, 0, 100000, 1);
-		JSpinner spinner = new JSpinner(model);
-		spinner.setMinimumSize(new Dimension(70, 50));	
-		spinner.setMaximumSize(new Dimension(70, 50));
-		buttonsPanel.add(spinner);
+		JSpinner _stepSpinner = new JSpinner(model);
+		_stepSpinner.setMinimumSize(new Dimension(70, 50));	
+		_stepSpinner.setMaximumSize(new Dimension(70, 50));
+		_stepSpinner.setToolTipText("Entries shown");
+		buttonsPanel.add(_stepSpinner);
 		
+		//Reset buttom.
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) -> {
 			// TODO
 		});
 		buttonsPanel.add(resetButton);
-
+		//Cancel buttom.
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener((e) -> {
 			MaxSpeedDialog.this.setVisible(false);
