@@ -57,13 +57,14 @@ public class MaxSpeedDialog extends JDialog{
 		//Reset buttom.
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) -> {
-			// TODO
+			maxSpeedTable.reset()
+			setVisible(false);
 		});
 		buttonsPanel.add(resetButton);
 		//Cancel buttom.
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener((e) -> {
-			MaxSpeedDialog.this.setVisible(false);
+			setVisible(false);
 		});
 		buttonsPanel.add(cancelButton);
 
