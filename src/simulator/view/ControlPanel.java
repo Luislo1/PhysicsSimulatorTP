@@ -85,6 +85,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		   -i resources/examples/input/ex1.json -o resources/examples/expected_output/out.1.json -s 1000 -dt 1000 -fl nlug -m gui
 		 */
 		
+		_maxSpeedTableModel = new MaxSpeedTableModel(_ctrl, DEFAULT_STEPS_MAXSPEED);
+		
 		_maxSpeedButton = new JButton();
 		_maxSpeedButton.setToolTipText("Max Speed Statistics");
 		_maxSpeedButton.setIcon(new ImageIcon("Resources/icons/physics.png")); // TODO poner su stats.png
