@@ -28,7 +28,7 @@ public class MovingTowardsTwoFixedPointsBuilder extends Builder<ForceLaws> {
 		Vector2D c1 = new Vector2D();
 		Vector2D c2 = new Vector2D();
 		Double g1 = 9.81; // TODO con que valores lo has inicializado?
-		Double g2 = 9.82;
+		Double g2 = 9.81;
 		if(data.has("c1")) {
 			JSONArray c = data.getJSONArray("c1");
 			if (c.length() != 2)
