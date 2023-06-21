@@ -57,7 +57,7 @@ public class MaxSpeedDialog extends JDialog{
 		//Reset buttom.
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) -> {
-			maxSpeedTable.reset()
+			maxSpeedTable.reset((Integer)_stepSpinner.getValue());
 			setVisible(false);
 		});
 		buttonsPanel.add(resetButton);
