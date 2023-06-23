@@ -1,7 +1,6 @@
 package simulator.view;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,16 +11,13 @@ import simulator.misc.Vector2D;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
-
-public class ForcesTableModel extends AbstractTableModel implements SimulatorObserver {
-
-	Map<String, Vector2D> _totalForce;
+@SuppressWarnings("serial")
+public class ForcesTableModel extends AbstractTableModel implements SimulatorObserver{
 	String[] _header = { "Body", "Total Forces" };
-	List<Body> _bodies;
-
-	public ForcesTableModel(Controller ctrl) {
-		_totalForce = new HashMap<>();
-		_bodies = new ArrayList<>();
+	List<Vector2D> _totalForces; // HashMap????
+	
+	ForcesTableModel(Controller ctrl) {
+		_totalForces = new ArrayList<>();
 		ctrl.addObserver(this);
 	}
 	
@@ -29,9 +25,11 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 		return _header[col];
 	}
 
+	
 	@Override
 	public int getRowCount() {
-		return _bodies == null ? 0 : _bodies.size();
+		return 0;
+		//TODO
 	}
 
 	@Override
@@ -42,15 +40,24 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
-		Body b = _bodies.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			s = b.getId();
+			s = _bodies.get(rowIndex).getId();
 			break;
 		case 1:
-			s = _totalForce.get(b.getId()+b.getgId());
+			s = _bodies.get(rowIndex).getgId();
 			break;
-		default:
+		case 2:
+			s = _bodies.get(rowIndex).getMass();
+			break;
+		case 3:
+			s = _bodies.get(rowIndex).getVelocity();
+			break;
+		case 4:
+			s = _bodies.get(rowIndex).getPosition();
+			break;
+		case 5:
+			s = _bodies.get(rowIndex).getForce();
 			break;
 		}
 		return s;
@@ -58,52 +65,44 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
-			BodiesGroup value = entry.getValue();
-			for (Body b : value) {
-				Vector2D currTotal = _totalForce.get(b.getId()+b.getgId());
-				Vector2D currForce = b.getForce();
-				_totalForce.put(b.getId()+b.getgId(), currTotal.plus(currForce));				
-			}
-		}
-		fireTableDataChanged();
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		_bodies.clear();
-		_totalForce.clear();
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
-			BodiesGroup value = entry.getValue();
-			for (Body b : value) {
-				_bodies.add(b);
-				_totalForce.put(b.getId()+b.getgId(), new Vector2D());				
-			}
-		}
-		fireTableStructureChanged();
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
-		_bodies.add(b);
-		_totalForce.put(b.getId()+b.getgId(), new Vector2D());
-		fireTableStructureChanged();
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onDeltaTimeChanged(double dt) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onForceLawsChanged(BodiesGroup g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

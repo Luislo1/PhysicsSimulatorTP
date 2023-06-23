@@ -82,16 +82,16 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_toolBar.add(_selectButton);
 		
 		// Total force per body.
+		_forcesTableModel = new ForcesTableModel(_ctrl);
+		
 		_totalForceButon = new JButton();
 		_totalForceButon.setToolTipText("Total force per body");
 		_totalForceButon.setIcon(new ImageIcon("Resources/icons/physics.png"));
 		_totalForceButon.addActionListener((e) -> {
 			if(_totalForceDialog == null) {
 				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
-				_totalForceDialog = new TotalForceDialog(parent, _forcesTableModel); // TODO
-			}
-			//_totalForceDialog.open();
-					
+				_totalForceDialog = new TotalForceDialog(parent, _forcesTableModel); 
+			}		
 		});
 		_toolBar.add(_totalForceButon);
 				
@@ -220,6 +220,7 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_viewerButton.setEnabled(activate);
 		_runButton.setEnabled(activate);
 		_stopButton.setEnabled(activate);
+		_totalForceButon.setEnabled(activate);
 	}
 
 	@Override

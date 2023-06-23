@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -20,21 +18,14 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.json.JSONObject;
-
-import simulator.control.Controller;
-import simulator.model.BodiesGroup;
-import simulator.model.Body;
-import simulator.model.SimulatorObserver;
-
 @SuppressWarnings("serial")
-public class TotalForceDialog extends JDialog {
-	private ForcesTableModel _forcesTableModel;
+public class TotalForceDialog extends JDialog{
+	ForcesTableModel forcesTableModel;
 	
-	TotalForceDialog(Frame parent, ForcesTableModel forces) {
+	TotalForceDialog(Frame parent, ForcesTableModel forcesTableModel) {
 		super(parent, true);
 		initGUI();
-		this._forcesTableModel = forces;
+		this.forcesTableModel = forcesTableModel;
 	}
 	
 	private void initGUI() {
@@ -42,14 +33,17 @@ public class TotalForceDialog extends JDialog {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
-		
+
 		JPanel eventsPanel = new JPanel(new BorderLayout());
 		mainPanel.add(eventsPanel, BorderLayout.CENTER);
-		
-		JTable _totalForceTable = new JTable(_forcesTableModel);
-		eventsPanel.add(_totalForceTable);
-		eventsPanel.add(new JScrollPane(_totalForceTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+
+		JTable _dataTable = new JTable(forcesTableModel);
+		eventsPanel.add(_dataTable);
+		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+		
+		TableColumn tableColumn = _dataTable.getColumnModel().getColumn(2);
+		tableColumn.setMinWidth(300);
 		JPanel comboBoxPanel = new JPanel();
 		mainPanel.add(comboBoxPanel, BorderLayout.PAGE_END);
 
@@ -57,15 +51,16 @@ public class TotalForceDialog extends JDialog {
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 
+
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener((e) -> {
-			TotalForceDialog.this.setVisible(false);
+			setVisible(false);
 		});
 		buttonsPanel.add(okButton);
 
 		setPreferredSize(new Dimension(700, 400));
 		pack();
 		setResizable(false);
-		setVisible(true);
+		setVisible(false);
 	}
 }
