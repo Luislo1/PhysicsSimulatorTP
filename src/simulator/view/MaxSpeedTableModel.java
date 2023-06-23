@@ -10,7 +10,7 @@ import simulator.control.Controller;
 import simulator.model.BodiesGroup;
 import simulator.model.Body;
 import simulator.model.SimulatorObserver;
-
+@SuppressWarnings("serial")
 public class MaxSpeedTableModel extends AbstractTableModel implements SimulatorObserver{
 	String[] _header = { "Time", "Id", "gId", "Max Speed" };
 	private List<Body> _bodies;
