@@ -18,12 +18,12 @@ import simulator.control.Controller;
 
 @SuppressWarnings("serial")
 public class MaxSpeedDialog extends JDialog{
-	private MaxSpeedTableModel maxSpeedTable;
+	private MaxSpeedTableModel maxSpeedTableModel;
 	
 	MaxSpeedDialog(Frame parent, MaxSpeedTableModel speed) {
 		super(parent, true);
 		initGUI();
-		this.maxSpeedTable = speed;	
+		this.maxSpeedTableModel = speed;	
 	}
 	
 	private void initGUI() {
@@ -35,7 +35,7 @@ public class MaxSpeedDialog extends JDialog{
 		JPanel eventsPanel = new JPanel(new BorderLayout());
 		mainPanel.add(eventsPanel, BorderLayout.CENTER);
 		
-		JTable _dataTable = new JTable(maxSpeedTable);
+		JTable _dataTable = new JTable(maxSpeedTableModel);
 		eventsPanel.add(_dataTable);
 		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
@@ -58,7 +58,7 @@ public class MaxSpeedDialog extends JDialog{
 		//Reset buttom.
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) -> {
-			maxSpeedTable.reset((Integer)_stepSpinner.getValue());
+			maxSpeedTableModel.reset((Integer)_stepSpinner.getValue());
 			setVisible(false);
 		});
 		buttonsPanel.add(resetButton);
