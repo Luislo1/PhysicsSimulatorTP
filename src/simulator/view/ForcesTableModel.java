@@ -14,9 +14,11 @@ import simulator.model.SimulatorObserver;
 @SuppressWarnings("serial")
 public class ForcesTableModel extends AbstractTableModel implements SimulatorObserver{
 	String[] _header = { "Body", "Total Forces" };
-	List<Vector2D> _totalForces; // HashMap????
+	List<Body> _bodies;
+	List<String> _totalForces; 
 	
 	ForcesTableModel(Controller ctrl) {
+		_bodies = new ArrayList<>();
 		_totalForces = new ArrayList<>();
 		ctrl.addObserver(this);
 	}
@@ -25,11 +27,9 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 		return _header[col];
 	}
 
-	
 	@Override
 	public int getRowCount() {
-		return 0;
-		//TODO
+		return _bodies == null ? 0 : _bodies.size();
 	}
 
 	@Override
@@ -45,19 +45,9 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 			s = _bodies.get(rowIndex).getId();
 			break;
 		case 1:
-			s = _bodies.get(rowIndex).getgId();
+			s = _totalForces.get(rowIndex).toString();
 			break;
-		case 2:
-			s = _bodies.get(rowIndex).getMass();
-			break;
-		case 3:
-			s = _bodies.get(rowIndex).getVelocity();
-			break;
-		case 4:
-			s = _bodies.get(rowIndex).getPosition();
-			break;
-		case 5:
-			s = _bodies.get(rowIndex).getForce();
+		default:
 			break;
 		}
 		return s;
@@ -65,32 +55,41 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
-		// TODO Auto-generated method stub
-		
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+			BodiesGroup value = entry.getValue();
+			for (Body b : value)
+				_totalForces.add(b.getForce().toString());
+		}
+		fireTableDataChanged();
 	}
 
 	@Override
 	public void onReset(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		_bodies.clear();
+		_totalForces.clear();
+		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
-		// TODO Auto-generated method stub
-		
+		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
+			BodiesGroup value = entry.getValue();
+			for (Body b : value)
+				_bodies.add(b);
+		}
+		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
 		// TODO Auto-generated method stub
-		
+		fireTableStructureChanged();
 	}
 
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
 		// TODO Auto-generated method stub
-		
+		fireTableStructureChanged();
 	}
 
 	@Override
