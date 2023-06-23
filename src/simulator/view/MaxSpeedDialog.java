@@ -39,9 +39,6 @@ public class MaxSpeedDialog extends JDialog{
 		eventsPanel.add(_dataTable);
 		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
-		
-		//JPanel comboBoxPanel = new JPanel();
-		//mainPanel.add(comboBoxPanel, BorderLayout.PAGE_END);
 
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
