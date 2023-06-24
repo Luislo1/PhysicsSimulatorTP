@@ -56,6 +56,6 @@ public class TotalForceDialog extends JDialog{
 		setPreferredSize(new Dimension(700, 400));
 		pack();
 		setResizable(false);
-		setVisible(false);
+		setVisible(true);
 	}
 }

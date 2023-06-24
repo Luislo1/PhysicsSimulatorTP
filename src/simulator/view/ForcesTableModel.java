@@ -74,8 +74,10 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 	public void onRegister(Map<String, BodiesGroup> groups, double time, double dt) {
 		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
 			BodiesGroup value = entry.getValue();
-			for (Body b : value)
+			for (Body b : value) {
 				_bodies.add(b);
+				_totalForces.add(new Vector2D().toString());
+			}
 		}
 		fireTableStructureChanged();
 	}
