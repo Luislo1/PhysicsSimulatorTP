@@ -27,6 +27,13 @@ public class DistancesTableModel extends AbstractTableModel implements Simulator
 		ctrl.addObserver(this);
 	}
 	
+	public void resetTotalDistances() {
+		for(Map.Entry<String, Double> entry: _accDistance.entrySet()) {
+			_accDistance.put(entry.getKey(), 0.0);
+		}
+		fireTableDataChanged();
+	}
+	
 	public String getColumnName(int col) {
 		return _header[col];
 	}
