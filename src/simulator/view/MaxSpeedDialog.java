@@ -22,8 +22,8 @@ public class MaxSpeedDialog extends JDialog{
 	
 	MaxSpeedDialog(Frame parent, MaxSpeedTableModel speed) {
 		super(parent, true);
+		this.maxSpeedTableModel = speed;
 		initGUI();
-		this.maxSpeedTableModel = speed;	
 	}
 	
 	private void initGUI() {

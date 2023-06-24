@@ -92,10 +92,8 @@ public class ControlPanel extends JPanel implements SimulatorObserver {
 		_maxSpeedButton.setToolTipText("Max Speed Statistics"); // TODO ver cambio
 		_maxSpeedButton.setIcon(new ImageIcon("Resources/icons/stats.png")); // // TODO ver cambio
 		_maxSpeedButton.addActionListener((e) -> { // TODO ver cambio
-			if (_maxSpeedDialog == null) { // TODO ver cambio
-				Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
-				_maxSpeedDialog = new MaxSpeedDialog(parent, _maxSpeedTableModel);
-			}
+			Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+			_maxSpeedDialog = new MaxSpeedDialog(parent, _maxSpeedTableModel);
 		});
 		_toolBar.add(_maxSpeedButton); // TODO ver cambio
 
