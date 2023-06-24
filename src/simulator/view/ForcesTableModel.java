@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,11 +16,11 @@ import simulator.model.SimulatorObserver;
 public class ForcesTableModel extends AbstractTableModel implements SimulatorObserver{
 	String[] _header = { "Body", "Total Forces" };
 	List<Body> _bodies;
-	List<String> _totalForces; 
+	Map<String, Vector2D> _totalForces; 
 	
 	ForcesTableModel(Controller ctrl) {
 		_bodies = new ArrayList<>();
-		_totalForces = new ArrayList<>();
+		_totalForces = new HashMap<>();
 		ctrl.addObserver(this);
 	}
 	
@@ -40,12 +41,13 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
+		Body b = _bodies.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			s = _bodies.get(rowIndex).getId();
 			break;
 		case 1:
-			s = _totalForces.get(rowIndex).toString();
+			s = _totalForces.get(b.getId()+b.getgId());
 			break;
 		default:
 			break;
@@ -57,8 +59,11 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 	public void onAdvance(Map<String, BodiesGroup> groups, double time) {
 		for (Map.Entry<String, BodiesGroup> entry : groups.entrySet()) {
 			BodiesGroup value = entry.getValue();
-			for (Body b : value)
-				_totalForces.add(b.getForce().toString());
+			for (Body b : value) {
+				Vector2D currTotal = _totalForces.get(b.getId()+b.getgId());
+				Vector2D currForce = b.getForce();
+				_totalForces.put(b.getId()+b.getgId(), currTotal.plus(currForce));
+			}
 		}
 		fireTableDataChanged();
 	}
@@ -76,7 +81,7 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 			BodiesGroup value = entry.getValue();
 			for (Body b : value) {
 				_bodies.add(b);
-				_totalForces.add(new Vector2D().toString());
+				_totalForces.put(b.getId()+b.getgId(), new Vector2D());
 			}
 		}
 		fireTableStructureChanged();
@@ -89,7 +94,8 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onBodyAdded(Map<String, BodiesGroup> groups, Body b) {
-		// TODO Auto-generated method stub
+		_bodies.add(b);
+		_totalForces.put(b.getId()+b.getgId(), new Vector2D());
 		fireTableStructureChanged();
 	}
 
