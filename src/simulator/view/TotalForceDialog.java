@@ -24,8 +24,8 @@ public class TotalForceDialog extends JDialog{
 	
 	TotalForceDialog(Frame parent, ForcesTableModel forcesTableModel) {
 		super(parent, true);
-		initGUI();
 		this.forcesTableModel = forcesTableModel;
+		initGUI();
 	}
 	
 	private void initGUI() {
@@ -42,11 +42,6 @@ public class TotalForceDialog extends JDialog{
 		eventsPanel.add(new JScrollPane(_dataTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 		
-		TableColumn tableColumn = _dataTable.getColumnModel().getColumn(2);
-		tableColumn.setMinWidth(300);
-		JPanel comboBoxPanel = new JPanel();
-		mainPanel.add(comboBoxPanel, BorderLayout.PAGE_END);
-
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);

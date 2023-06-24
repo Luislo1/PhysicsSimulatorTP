@@ -82,7 +82,6 @@ public class ForcesTableModel extends AbstractTableModel implements SimulatorObs
 
 	@Override
 	public void onGroupAdded(Map<String, BodiesGroup> groups, BodiesGroup g) {
-		// TODO Auto-generated method stub
 		fireTableStructureChanged();
 	}
 
