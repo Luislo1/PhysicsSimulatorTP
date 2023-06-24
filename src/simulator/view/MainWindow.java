@@ -44,6 +44,8 @@ public class MainWindow extends JFrame {
 		JPanel bodiesTable = new InfoTable("Bodies", new BodiesTableModel(_ctrl));
 		bodiesTable.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(bodiesTable);
+		
+		JPanel massLossingTextArea 
 
 		addWindowListener(new WindowListener() {
 
