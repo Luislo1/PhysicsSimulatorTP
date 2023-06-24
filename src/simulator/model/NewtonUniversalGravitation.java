@@ -8,7 +8,7 @@ public class NewtonUniversalGravitation implements ForceLaws {
 
 	private double G;
 	
-	public NewtonUniversalGravitation(double G, double m1, double m2, ) {
+	public NewtonUniversalGravitation(double G) {
 		if (G <= 0) {
 			throw new IllegalArgumentException("Invalid parameters to create Newton Gravitation Law: G must be a positive value");
 		}

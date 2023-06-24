@@ -7,6 +7,8 @@ import simulator.model.Body;
 import simulator.model.ForceLaws;
 
 public class MovingAroundBodyGreaterMass implements ForceLaws {
+	private double g;
+	private Vector2D c;
 	
 	public MovingAroundBodyGreaterMass(Vector2D c, double g)  { 
 		if (g <= 0 || c == null) 
