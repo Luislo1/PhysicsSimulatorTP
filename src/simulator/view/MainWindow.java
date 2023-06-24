@@ -16,7 +16,6 @@ import simulator.control.Controller;
 public class MainWindow extends JFrame {
 
 	private Controller _ctrl;
-	private DistancesTableModel distancesTableModel;
 
 	public MainWindow(Controller ctrl) {
 		super("Physics Simulator");
@@ -47,21 +46,9 @@ public class MainWindow extends JFrame {
 		bodiesTable.setPreferredSize(new Dimension(500, 250));
 		contentPanel.add(bodiesTable);
 		
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
-		mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
-		
-		distancesTableModel = new DistancesTableModel(_ctrl);
-
-		JButton resetButton = new JButton("Reset Distances");
-		resetButton.addActionListener((e) -> {
-			distancesTableModel.resetTotalDistances();
-		});
-		buttonsPanel.add(resetButton);
-		
-		JPanel distancesTable = new InfoTable("Accumulated Distances", distancesTableModel);
-		bodiesTable.setPreferredSize(new Dimension(500, 250));
-		contentPanel.add(distancesTable);
+		JPanel accDistanceTable = new InfoDistanceTable("Accumulated Distances", new DistancesTableModel(_ctrl));
+		accDistanceTable.setPreferredSize(new Dimension(500, 250));
+		contentPanel.add(accDistanceTable);
 
 		addWindowListener(new WindowListener() {
 
